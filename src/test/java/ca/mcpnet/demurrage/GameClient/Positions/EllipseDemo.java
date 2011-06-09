@@ -9,23 +9,23 @@ import com.jme3.scene.shape.Line;
 
 public class EllipseDemo extends SimpleApplication {
 
-	Geometry player;
+	Geometry _target;
 	
 	@Override
 	public void simpleInitApp() {
-		Line l = new Line(new Vector3f(1,1,1), new Vector3f(-1,-1,-1));
-        player = new Geometry("blue cube", l);
+		Ellipse e = new Ellipse(2f,0.8f);
+        _target = new Geometry("ellipse", e);
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
-        player.setMaterial(mat);
-        rootNode.attachChild(player);
+        mat.setColor("Color", ColorRGBA.Green);
+        _target.setMaterial(mat);
+        rootNode.attachChild(_target);
 	}
 
 	/* This is the update loop */
     @Override
     public void simpleUpdate(float tpf) {
         // make the player rotate
-        player.rotate(0, 2*tpf, 0);
+        _target.rotate(0, 0, 2*tpf);
     }
 
 	/**
