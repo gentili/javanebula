@@ -58,5 +58,10 @@
 		<artifactId>lwjgl_natives</artifactId>
 		<version>3.0</version>
 	</dependency>
+	<dependency>
+		<groupId>ca.mcpnet.demurrage</groupId>
+		<artifactId>GameEngine</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
   </dependencies>
 </project>
