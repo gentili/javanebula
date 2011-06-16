@@ -1,4 +1,4 @@
-package ca.mcpnet.demurrage.GameClient.Positions;
+package ca.mcpnet.demurrage.GameClient.PositionSpacials;
 
 import java.util.Iterator;
 
@@ -13,11 +13,11 @@ import com.jme3.scene.VertexBuffer.Type;
 /*
  * This ties the ellipse to a display method
  */
-public class Ellipse extends Mesh {
+public class EllipseSpacial extends Mesh {
 	  float _semiMajorAxis;
 	  float _e; // Eccentricity
 
-	  Ellipse(float semiMajorAxis, float e) {
+	  EllipseSpacial(float semiMajorAxis, float e) {
 		  _semiMajorAxis = semiMajorAxis;
 		  _e = e;
 		  /*

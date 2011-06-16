@@ -1,4 +1,6 @@
-package ca.mcpnet.demurrage.GameClient.Positions;
+package ca.mcpnet.demurrage.GameClient.PositionSpacials;
+
+import ca.mcpnet.demurrage.GameClient.PositionSpacials.EllipseSpacial;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
@@ -13,7 +15,7 @@ public class EllipseDemo extends SimpleApplication {
 	
 	@Override
 	public void simpleInitApp() {
-		Ellipse e = new Ellipse(2f,0.8f);
+		EllipseSpacial e = new EllipseSpacial(2f,0.8f);
         _target = new Geometry("ellipse", e);
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Green);
