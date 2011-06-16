@@ -9,9 +9,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Line;
 
-public class EllipseDemo extends SimpleApplication {
+public class EllipseSpacialDemo extends SimpleApplication {
 
 	Geometry _target;
+	
+	EllipseSpacialDemo() {
+		super();
+	}
 	
 	@Override
 	public void simpleInitApp() {
@@ -34,7 +38,8 @@ public class EllipseDemo extends SimpleApplication {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		EllipseDemo app = new EllipseDemo();
+		EllipseSpacialDemo app = new EllipseSpacialDemo();
+		app.setShowSettings(false);
 		app.start();
 	}
 
