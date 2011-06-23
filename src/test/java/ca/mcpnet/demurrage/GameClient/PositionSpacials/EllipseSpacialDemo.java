@@ -9,7 +9,8 @@ import com.jme3.scene.Geometry;
 
 public class EllipseSpacialDemo extends SimpleDemo {
 
-	Geometry _target;
+	EllipseSpacial _e;
+	float _curE;
 	
 	EllipseSpacialDemo() {
 		super();
@@ -17,15 +18,16 @@ public class EllipseSpacialDemo extends SimpleDemo {
 	
 	@Override
 	public void simpleInitApp() {
-		  EllipseSpacial e = new EllipseSpacial(2f,0.8f,assetManager);
-		  rootNode.attachChild(e.getRootNode());
+		  _curE = 3;
+		  _e = new EllipseSpacial(2f,0.8f,_curE,assetManager);
+		  rootNode.attachChild(_e);
 	}
 
 	/* This is the update loop */
     @Override
     public void simpleUpdate(float tpf) {
-        // make the player rotate
-        // _target.rotate(0, 0, 2*tpf);
+    	_curE += tpf;
+    	_e.setEccentricAnomaly(_curE);
     }
 
 	/**
