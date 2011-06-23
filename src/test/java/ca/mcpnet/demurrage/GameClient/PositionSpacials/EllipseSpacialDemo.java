@@ -6,6 +6,7 @@ import ca.mcpnet.demurrage.GameClient.PositionSpacials.EllipseSpacial;
 public class EllipseSpacialDemo extends SimpleDemo {
 
 	EllipseSpacial _e;
+	EllipseSpacial _e2;
 	float _curE;
 
 	EllipseSpacialDemo() {
@@ -15,18 +16,22 @@ public class EllipseSpacialDemo extends SimpleDemo {
 	@Override
 	public void simpleInitApp() {
 		chaseCam.setDefaultDistance(5.8f);
-		chaseCam.setDefaultHorizontalRotation(-2.8f);
+		chaseCam.setDefaultHorizontalRotation(-1.3f);
 		chaseCam.setDefaultVerticalRotation(0);
-		_curE = 3;
+		_curE = 0;
 		_e = new EllipseSpacial(2f, 0.8f, _curE, assetManager);
+		_e2 = new EllipseSpacial(0.5f, 0.8f, _curE, assetManager);
+		_e.attachChildToPosNode(_e2);
 		rootNode.attachChild(_e);
+		chaseCam.setSpatial(_e2.getPosNode());
 	}
 
 	/* This is the update loop */
 	@Override
 	public void simpleUpdate(float tpf) {
 		_curE += tpf;
-		_e.setTrueAnomaly(_curE);
+		_e.setTrueAnomaly(_e.getTrueFromEccentric(_curE/2));
+		_e2.setTrueAnomaly(_e.getTrueFromEccentric(_curE*2));
 	}
 
 	/**

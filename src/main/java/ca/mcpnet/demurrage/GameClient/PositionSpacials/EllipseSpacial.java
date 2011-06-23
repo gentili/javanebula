@@ -11,6 +11,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.scene.debug.Arrow;
@@ -32,6 +33,7 @@ public class EllipseSpacial extends Node {
 	Geometry _ellipseGeom;
 	Arrow _posMesh;
 	Geometry _posGeom;
+	Node _posNode;
 
 	EllipseSpacial(float semiMajorAxis, float e, float trueAnom,
 			AssetManager assetManager) {
@@ -42,12 +44,15 @@ public class EllipseSpacial extends Node {
 		ellipseInit();
 		// Initialize the path
 		pathInit(trueAnom);
-		// Build the position vector
-		_posMesh = new Arrow(getPointAtTrueAnomaly(trueAnom));
+		// Build the position vector and node
+		_posNode = new Node();
+		_posNode.setLocalTranslation(getPointAtTrueAnomaly(trueAnom));
+		_posMesh = new Arrow(_posNode.getLocalTranslation());
 		_posGeom = new Geometry("PosVect", _posMesh);
 		_posGeom.setMaterial(new Material(assetManager,
 				"Common/MatDefs/Misc/SolidColor.j3md"));
 		_posGeom.getMaterial().setColor("Color", ColorRGBA.Green);
+		attachChild(_posNode);
 		attachChild(_posGeom);
 	}
 
@@ -122,13 +127,13 @@ public class EllipseSpacial extends Node {
 
 	}
 
-	private float getTrueFromEccentric(float E) {
+	public float getTrueFromEccentric(float E) {
 		return (float) (2 * FastMath.atan2(
 				FastMath.sqrt(1 + _e) * FastMath.sin(E / 2),
 				FastMath.sqrt(1 - _e) * FastMath.cos(E / 2)));
 	}
 
-	private float getEccentricFromTrue(float theta) {
+	public float getEccentricFromTrue(float theta) {
 		return (float) (FastMath.atan2(
 				FastMath.sqrt(1 - _e * _e) * FastMath.sin(theta),
 				_e + FastMath.cos(theta)));
@@ -147,7 +152,8 @@ public class EllipseSpacial extends Node {
 
 	public void setTrueAnomaly(float theta) {
 		// Adjust the position pointer
-		_posMesh.setArrowExtent(getPointAtTrueAnomaly(theta));
+		_posNode.setLocalTranslation(getPointAtTrueAnomaly(theta));
+		_posMesh.setArrowExtent(_posNode.getLocalTranslation());
 		_posMesh.getBuffer(Type.Position).setUpdateNeeded();
 		// Adjust the path
 		FloatBuffer buffer = _pathGeom.getMesh().getFloatBuffer(Type.Position);
@@ -163,5 +169,13 @@ public class EllipseSpacial extends Node {
 		}
 		_pathMesh.getBuffer(Type.Position).setUpdateNeeded();
 		_pathMesh.updateBound();
+	}
+	
+	public void attachChildToPosNode(Spatial s) {
+		_posNode.attachChild(s);
+	}
+	
+	public Node getPosNode() {
+		return _posNode;
 	}
 }
