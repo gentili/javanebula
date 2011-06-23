@@ -30,7 +30,7 @@ public class EllipseSpacialDemo extends SimpleDemo {
     @Override
     public void simpleUpdate(float tpf) {
     	_curE += tpf;
-    	_e.setEccentricAnomaly(_curE);
+    	_e.setTrueAnomaly(_curE);
     }
 
 	/**

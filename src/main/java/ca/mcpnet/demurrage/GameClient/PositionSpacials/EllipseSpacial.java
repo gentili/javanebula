@@ -24,43 +24,43 @@ import com.jme3.scene.debug.Arrow;
 public class EllipseSpacial extends Node {
 	  float _semiMajorAxis;
 	  float _e; // Eccentricity
-	  int _points;
+	  AssetManager _assetManager;
 	  
-	  // Has a velo, path, accel
-	  Geometry _path;
-	  Arrow _posVect;
+	  int _pathPointCount;
+	  Mesh _pathMesh;
+	  Geometry _pathGeom;
+	  int _ellipsePointCount;
+	  Mesh _ellipseMesh;
+	  Geometry _ellipseGeom;
+	  Arrow _posMesh;
+	  Geometry _posGeom;
 
 	  EllipseSpacial(float semiMajorAxis, float e, float trueAnom, AssetManager assetManager) {
 		_semiMajorAxis = semiMajorAxis;
 		_e = e;
+		_assetManager = assetManager;
 		
-		// Build the path
-		_points = 40;
-		Mesh orbitMesh = new Mesh();
-		short[] indices = new short[_points];
-		float[] vertexes = new float[_points*3];
-		float[] colors = new float[_points*4];
+		ellipseInit();
+		// Initialize the path
+		pathInit(trueAnom);
+		// Build the position vector
+		_posMesh = new Arrow(getPointAtTrueAnomaly(trueAnom));
+        _posGeom = new Geometry("PosVect", _posMesh);
+        _posGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/SolidColor.j3md"));
+        _posGeom.getMaterial().setColor("Color", ColorRGBA.Green);
+        attachChild(_posGeom);
+	  }
+	  
+	  private void ellipseInit() {
+		// Initialize the ellipse
+		_ellipsePointCount = 40;
+		_ellipseMesh = new Mesh();
+		short[] indices = new short[_ellipsePointCount];
+		float[] vertexes = new float[_ellipsePointCount*3];
 		int i = 0;
-		int colori = 0;
-		// Last point has to be at theta
-		float eccentricAnom = this.getEccentricFromTrue(trueAnom);
-		for (int curpoint = 0; curpoint < _points; curpoint++) {
-			float E = eccentricAnom - (float) (curpoint/(float)_points*Math.PI/4);
-		    Vector3f vector3f = getPointAtEccentricAnomaly(E);
-		    vertexes[i++] = vector3f.getX();
-		    vertexes[i++] = vector3f.getY();
-		    vertexes[i++] = vector3f.getZ();
-		    indices[curpoint] = (short) curpoint;
-		    
-		    colors[colori++] = 0.0f; // RED
-		    colors[colori++] = 1.1f - (float) curpoint / (float) (_points);   // GREEN
-		    colors[colori++] = 0.0f; // BLUE
-		    colors[colori++] = 1f;   // ALPHA
-		}
-		/* 
-		// This is for the whole ellipse, we just want a chunk of the path
-		for (int curpoint = 0;curpoint < points;curpoint++) {
-			float theta = (float) (curpoint/(float)points*2*Math.PI);
+
+		for (int curpoint = 0;curpoint < _ellipsePointCount;curpoint++) {
+			float theta = (float) (curpoint/(float)_ellipsePointCount*2*Math.PI);
 		    Vector3f vector3f = getPointAtEccentricAnomaly(theta);
 		    vertexes[i] = vector3f.getX();
 		    i++;
@@ -69,33 +69,54 @@ public class EllipseSpacial extends Node {
 		    vertexes[i] = vector3f.getZ();
 		    i++;
 		    indices[curpoint] = (short) curpoint;
-		    
-		    colors[colori++] = 0.0f; // RED
-		    colors[colori++] = 0.1f + (float) curpoint / (float) (points);   // GREEN
-		    colors[colori++] = 0.0f; // BLUE
-		    colors[colori++] = 1f;   // ALPHA
 		}
-		*/
+		_ellipseMesh.setMode(Mesh.Mode.Points);
+		_ellipseMesh.setBuffer(VertexBuffer.Type.Position, 3, vertexes);
+		_ellipseMesh.setBuffer(VertexBuffer.Type.Index, 1, indices);
+		_ellipseMesh.updateBound();
+		_ellipseMesh.updateCounts();
 		
-		orbitMesh.setMode(Mesh.Mode.LineStrip);
-		orbitMesh.setBuffer(VertexBuffer.Type.Position, 3, vertexes);
-		orbitMesh.setBuffer(VertexBuffer.Type.Index, 1, indices);
-		orbitMesh.setBuffer(VertexBuffer.Type.Color, 4, colors);
-		orbitMesh.updateBound();
-		orbitMesh.updateCounts();
-		
-		_path = new Geometry("ellipsePath", orbitMesh);
-		_path.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/VertexColor.j3md"));
-		attachChild(_path);
-		
-		// Build the position vector
-		_posVect = new Arrow(getPointAtTrueAnomaly(trueAnom));
-        Geometry posGeom = new Geometry("PosVect", _posVect);
-        posGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/SolidColor.j3md"));
-        posGeom.getMaterial().setColor("Color", ColorRGBA.Green);
-        attachChild(posGeom);
+		_ellipseGeom = new Geometry("ellipse", _ellipseMesh);
+		_ellipseGeom.setMaterial(new Material(_assetManager, "Common/MatDefs/Misc/SolidColor.j3md"));
+		_ellipseGeom.getMaterial().setColor("Color", ColorRGBA.Blue);
+		attachChild(_ellipseGeom);
+		}
+
+	  private void pathInit(float trueAnom) {
+			_pathPointCount = 40;
+			_pathMesh = new Mesh();
+			short[] indices = new short[_pathPointCount];
+			float[] vertexes = new float[_pathPointCount*3];
+			float[] colors = new float[_pathPointCount*4];
+			int i = 0;
+			int colori = 0;
+			float eccentricAnom = this.getEccentricFromTrue(trueAnom);
+			for (int curpoint = 0; curpoint < _pathPointCount; curpoint++) {
+				float E = eccentricAnom - (float) (curpoint/(float)_pathPointCount*Math.PI/2);
+			    Vector3f vector3f = getPointAtEccentricAnomaly(E);
+			    vertexes[i++] = vector3f.getX();
+			    vertexes[i++] = vector3f.getY();
+			    vertexes[i++] = vector3f.getZ();
+			    indices[curpoint] = (short) curpoint;
+			    
+			    colors[colori++] = 0.0f; // RED
+			    colors[colori++] = 1.1f - (float) curpoint / (float) (_pathPointCount);   // GREEN
+			    colors[colori++] = 0.0f; // BLUE
+			    colors[colori++] = 1f;   // ALPHA
+			}
+			
+			_pathMesh.setMode(Mesh.Mode.LineStrip);
+			_pathMesh.setBuffer(VertexBuffer.Type.Position, 3, vertexes);
+			_pathMesh.setBuffer(VertexBuffer.Type.Index, 1, indices);
+			_pathMesh.setBuffer(VertexBuffer.Type.Color, 4, colors);
+			_pathMesh.updateBound();
+			_pathMesh.updateCounts();
+			
+			_pathGeom = new Geometry("ellipsePath", _pathMesh);
+			_pathGeom.setMaterial(new Material(_assetManager, "Common/MatDefs/Misc/VertexColor.j3md"));
+			attachChild(_pathGeom);
+
 	  }
-	  
 	  private float getTrueFromEccentric(float E) {
 		  return (float) (2*FastMath.atan2(FastMath.sqrt(1 + _e)*FastMath.sin(E/2),
 				  FastMath.sqrt(1 - _e)*FastMath.cos(E/2)));	  
@@ -114,23 +135,22 @@ public class EllipseSpacial extends Node {
 		  return new Vector3f((float)(r*FastMath.cos(theta)),(float)(r*FastMath.sin(theta)),(float) 0.0);
 	  }
 	  
-	  public void setEccentricAnomaly(float E) {
-		_posVect.setArrowExtent(getPointAtEccentricAnomaly(E));
-		_posVect.getBuffer(Type.Position).setUpdateNeeded();
+	  public void setTrueAnomaly(float theta) {
+		// Adjust the position pointer
+		_posMesh.setArrowExtent(getPointAtTrueAnomaly(theta));
+		_posMesh.getBuffer(Type.Position).setUpdateNeeded();
 		// Adjust the path
-		FloatBuffer buffer = _path.getMesh().getFloatBuffer(Type.Position);
+		FloatBuffer buffer = _pathGeom.getMesh().getFloatBuffer(Type.Position);
         buffer.rewind();
-		for (int curpoint = 0; curpoint < _points; curpoint++) {
-			float curE = E - (float) (curpoint/(float)_points*Math.PI/2);
+		float E = this.getEccentricFromTrue(theta);
+		for (int curpoint = 0; curpoint < _pathPointCount; curpoint++) {
+			float curE = E - (float) (curpoint/(float)_pathPointCount*Math.PI/2);
 		    Vector3f vector3f = getPointAtEccentricAnomaly(curE);
 		    buffer.put(vector3f.getX());
 		    buffer.put(vector3f.getY());
 		    buffer.put(vector3f.getZ());
 		}
-		_path.getMesh().getBuffer(Type.Position).setUpdateNeeded();
-        _path.getMesh().updateBound();
-        
-
-
+		_pathMesh.getBuffer(Type.Position).setUpdateNeeded();
+        _pathMesh.updateBound();
 	  }
 }
