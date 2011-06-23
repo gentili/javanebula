@@ -158,7 +158,7 @@ public abstract class SimpleDemo extends Application {
             chaseCam = new ChaseCamera(cam, rootNode);
             
             chaseCam.setMaxVerticalRotation((float) (FastMath.PI/2-1E-3));
-            chaseCam.setMinVerticalRotation(-FastMath.PI/2);
+            chaseCam.setMinVerticalRotation((float) (-FastMath.PI/2+1E-3));
             // chaseCam.setRotationSensitivity(150.0f);
             chaseCam.registerWithInput(inputManager);
 
