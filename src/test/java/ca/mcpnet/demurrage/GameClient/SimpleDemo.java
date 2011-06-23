@@ -56,6 +56,9 @@ public abstract class SimpleDemo extends Application {
                             + loc.x + ", " + loc.y + ", " + loc.z + ")");
                     System.out.println("Camera Rotation: " + rot);
                     System.out.println("Camera Direction: " + cam.getDirection());
+                    System.out.println("Chase Distance: " + chaseCam.getDistanceToTarget());
+                    System.out.println("Chase Horiz: " + chaseCam.getHorizontalRotation());
+                    System.out.println("Chase Vert: " + chaseCam.getVerticalRotation());
                 }
             } else if (name.equals(INPUT_MAPPING_MEMORY)) {
                 BufferUtils.printCurrentDirectMemory(null);
