@@ -7,6 +7,7 @@ import org.apache.commons.math.util.FastMath;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -36,9 +37,10 @@ public class EllipseSpacial extends Node {
 	Node _posNode;
 
 	EllipseSpacial(float semiMajorAxis, float e, float trueAnom,
-			AssetManager assetManager) {
+			Quaternion rot, AssetManager assetManager) {
 		_semiMajorAxis = semiMajorAxis;
 		_e = e;
+		setLocalRotation(rot);
 		_assetManager = assetManager;
 
 		ellipseInit();
@@ -67,12 +69,9 @@ public class EllipseSpacial extends Node {
 		for (int curpoint = 0; curpoint < _ellipsePointCount; curpoint++) {
 			float theta = (float) (curpoint / (float) _ellipsePointCount * 2 * Math.PI);
 			Vector3f vector3f = getPointAtEccentricAnomaly(theta);
-			vertexes[i] = vector3f.getX();
-			i++;
-			vertexes[i] = vector3f.getY();
-			i++;
-			vertexes[i] = vector3f.getZ();
-			i++;
+			vertexes[i++] = vector3f.getX();
+			vertexes[i++] = vector3f.getY();
+			vertexes[i++] = vector3f.getZ();
 			indices[curpoint] = (short) curpoint;
 		}
 		_ellipseMesh.setMode(Mesh.Mode.Points);
