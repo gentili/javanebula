@@ -36,7 +36,7 @@ public class EllipseSpacialDemo extends SimpleDemo {
 	/* This is the update loop */
 	@Override
 	public void simpleUpdate(float tpf) {
-		_curE += tpf;
+		_curE += tpf/10f;
 		_e.setTrueAnomaly(_curE);
 		_e2.setTrueAnomaly(_e2.getTrueFromEccentric(_curE*2));
 		_e3.setTrueAnomaly(_e3.getTrueFromEccentric(_curE*3));
