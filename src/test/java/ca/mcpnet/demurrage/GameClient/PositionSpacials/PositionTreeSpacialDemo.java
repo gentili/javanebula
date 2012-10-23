@@ -1,9 +1,6 @@
 package ca.mcpnet.demurrage.GameClient.PositionSpacials;
 
-import com.jme3.math.Quaternion;
-
 import ca.mcpnet.demurrage.GameClient.SimpleDemo;
-import ca.mcpnet.demurrage.GameClient.PositionSpacials.EllipseSpacial;
 
 public class PositionTreeSpacialDemo extends SimpleDemo {
 
