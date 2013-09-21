@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.jboss.netty.channel.ChannelFuture;
 
+import ca.mcpnet.demurrage.GameClient.ConcursionServerConnectionProcessor;
 import ca.mcpnet.demurrage.GameEngine.ConcursionServer.BindingList;
 import ca.mcpnet.demurrage.GameEngine.ConcursionServer.Concursion;
 import ca.mcpnet.demurrage.GameEngine.ConcursionServer.CosmNode;
@@ -22,7 +23,6 @@ import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientSession;
 import ca.mcpnet.demurrage.GameEngine.ConcursionServer.LinkBinding;
 import ca.mcpnet.demurrage.GameEngine.ConcursionServer.LinkTerminus;
 import ca.mcpnet.demurrage.GameEngine.ConcursionServer.TimeFunction;
-import ca.mcpnet.demurrage.GameEngine.GameClient.ConcursionServerConnectionProcessor;
 
 public class ConcursionServerConnectionTest extends TestCase {
 	Logger log = Logger.getLogger("ConcursionServerConnectionTest");
