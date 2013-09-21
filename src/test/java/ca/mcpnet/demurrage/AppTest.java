@@ -1,4 +1,4 @@
-package ca.mcpnet.demurrage.GameClient;
+package ca.mcpnet.demurrage;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
