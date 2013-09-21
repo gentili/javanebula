@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<classpath>
+    <entriesToScan>
+        <entry>file:/Users/gentili/SourceControl/svn/demurrage/GameEngine/target/classes/ca/mcpnet/demurrage/GameEngine/GameClient/</entry>
+    </entriesToScan>
+    <entriesDependencies>
+        <entry>file:/Users/gentili/SourceControl/svn/demurrage/GameEngine/target/classes/</entry>
+    </entriesDependencies>
+</classpath>
