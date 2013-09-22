@@ -12,9 +12,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.BindingList;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.Concursion;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerConnectionProcessor;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.BindingList;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.Concursion;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.ConcursionServerConnectionProcessor;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;

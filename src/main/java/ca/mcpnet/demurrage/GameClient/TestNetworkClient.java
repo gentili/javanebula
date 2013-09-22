@@ -6,16 +6,16 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.jboss.netty.channel.ChannelFuture;
 
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.BindingList;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.Concursion;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerCallbacks;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerConnectionProcessor;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.CosmNode;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.CosmNode.CosmState;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientMessageDecoder.GameClientMessageTypes;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.LinkBinding;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.LinkTerminus;
-import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.TimeFunction;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.BindingList;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.Concursion;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.ConcursionServerCallbacks;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.ConcursionServerConnectionProcessor;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.CosmNode;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.LinkBinding;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.LinkTerminus;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.TimeFunction;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.CosmNode.CosmState;
+import ca.mcpnet.demurrage.Common.ConcursionProtocol.GameClientMessageDecoder.GameClientMessageTypes;
 
 
 public class TestNetworkClient implements ConcursionServerCallbacks {
