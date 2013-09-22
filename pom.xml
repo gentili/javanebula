@@ -171,13 +171,13 @@
 	<dependency>
 		<groupId>ca.mcpnet.demurrage</groupId>
 		<artifactId>Common</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 	</dependency>
   </dependencies>
   <parent>
   	<groupId>ca.mcpnet.demurrage</groupId>
   	<artifactId>GameEngine</artifactId>
-  	<version>0.0.1-SNAPSHOT</version>
+  	<version>0.1.0-SNAPSHOT</version>
   	<relativePath>../GameEngine</relativePath>
   </parent>
 </project>
