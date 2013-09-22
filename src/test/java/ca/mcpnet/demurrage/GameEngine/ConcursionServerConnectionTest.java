@@ -11,18 +11,18 @@ import org.apache.log4j.PropertyConfigurator;
 import org.jboss.netty.channel.ChannelFuture;
 
 import ca.mcpnet.demurrage.GameClient.ConcursionServerConnectionProcessor;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.BindingList;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.Concursion;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.CosmNode;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.CosmNode.CosmState;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientCallbacks;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientConnectionProcessor;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientMessageDecoder.GameClientMessageTypes;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.ConcursionServerCallbacks;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientSession;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.LinkBinding;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.LinkTerminus;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.TimeFunction;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.BindingList;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.Concursion;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerCallbacks;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.CosmNode;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.CosmNode.CosmState;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientCallbacks;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientConnectionProcessor;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientMessageDecoder.GameClientMessageTypes;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientSession;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.LinkBinding;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.LinkTerminus;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.TimeFunction;
 
 public class ConcursionServerConnectionTest extends TestCase {
 	Logger log = Logger.getLogger("ConcursionServerConnectionTest");

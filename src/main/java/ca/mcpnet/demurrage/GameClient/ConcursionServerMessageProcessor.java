@@ -3,13 +3,13 @@ package ca.mcpnet.demurrage.GameClient;
 import org.apache.log4j.Logger;
 import org.jboss.netty.channel.ChannelFuture;
 
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.CosmNode;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.CosmNode.CosmState;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientMessageDecoder.GameClientMessageTypes;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.ConcursionServerCallbacks;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.LinkBinding;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.LinkTerminus;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.TimeFunction;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerCallbacks;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.CosmNode;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.CosmNode.CosmState;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientMessageDecoder.GameClientMessageTypes;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.LinkBinding;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.LinkTerminus;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.TimeFunction;
 
 public class ConcursionServerMessageProcessor implements ConcursionServerCallbacks {
 	Logger _log = Logger.getLogger("ConcursionServerMessageProcessor");
@@ -155,18 +155,19 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 	}
 
 	// CONCURSION
+
 	@Override
 	public void concursion(
-			ca.mcpnet.demurrage.GameEngine.ConcursionServer.Concursion concursion) {
+			ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.Concursion concursion) {
 		_gameClient.addGameClientTask(new Concursion(concursion));
 	}
 	
 	private static class Concursion implements GameClientTask {
 
-		private ca.mcpnet.demurrage.GameEngine.ConcursionServer.Concursion _concursion;
+		private ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.Concursion _concursion;
 
 		public Concursion(
-				ca.mcpnet.demurrage.GameEngine.ConcursionServer.Concursion concursion) {
+				ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.Concursion concursion) {
 			_concursion = concursion;
 		}
 
@@ -365,16 +366,16 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 	
 	@Override
 	public void bindingList(
-			ca.mcpnet.demurrage.GameEngine.ConcursionServer.BindingList bindingList) {
+			ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.BindingList bindingList) {
 		_gameClient.addGameClientTask(new BindingList(bindingList));
 	}
 	
 	private static class BindingList implements GameClientTask {
 
-		private ca.mcpnet.demurrage.GameEngine.ConcursionServer.BindingList _bindingList;
+		private ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.BindingList _bindingList;
 
 		public BindingList(
-				ca.mcpnet.demurrage.GameEngine.ConcursionServer.BindingList bindingList) {
+				ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.BindingList bindingList) {
 			_bindingList = bindingList;
 		}
 

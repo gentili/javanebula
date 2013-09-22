@@ -8,10 +8,10 @@ import org.jboss.netty.handler.codec.oneone.OneToOneDecoder;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
 import ca.mcpnet.demurrage.GameEngine.LengthFieldConnectionClient;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.ConcursionServerCallbacks;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.ConcursionServerMessageDecoder;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientConnectionProcessor;
-import ca.mcpnet.demurrage.GameEngine.ConcursionServer.GameClientMessageDecoder.GameClientMessageTypes;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerCallbacks;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.ConcursionServerMessageDecoder;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientConnectionProcessor;
+import ca.mcpnet.demurrage.GameEngine.ConcursionProtocol.GameClientMessageDecoder.GameClientMessageTypes;
 import ca.mcpnet.demurrage.GameEngine.Utils.StringCodec;
 
 public class ConcursionServerConnectionProcessor extends LengthFieldConnectionClient {
