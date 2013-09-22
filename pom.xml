@@ -6,10 +6,8 @@
   <packaging>jar</packaging>
 
   <name>GameClient</name>
-  <url>http://www.mcpnet.ca</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <finalName>${project.artifactId}-${project.version}.jar</finalName>
     <main.class>ca.mcpnet.demurrage.GameEngine.GameClient.GameClient</main.class>
     <natives>${basedir}/target/natives/</natives>
