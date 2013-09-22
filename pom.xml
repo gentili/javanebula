@@ -143,46 +143,6 @@
   	</repository>
   </repositories>
   <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.8.2</version>
-  		<type>jar</type>
-  		<scope>test</scope>
-  	</dependency>
-	<dependency>
-		<groupId>log4j</groupId>
-		<artifactId>log4j</artifactId>
-		<version>1.2.16</version>
-		<scope>compile</scope>
-	</dependency>
-  	<dependency>
-  		<groupId>org.apache.commons</groupId>
-  		<artifactId>commons-math</artifactId>
-  		<version>2.2</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-	<dependency>
-		<groupId>org.apache.directory.studio</groupId>
-		<artifactId>org.apache.commons.io</artifactId>
-		<version>2.1</version>
-		<type>jar</type>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.directory.studio</groupId>
-		<artifactId>org.apache.commons.lang</artifactId>
-		<version>2.6</version>
-		<type>jar</type>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>io.netty</groupId>
-		<artifactId>netty</artifactId>
-		<version>3.5.7.Final</version>
-		<scope>compile</scope>
-	</dependency>
     <!-- The following are GameClient specific -->
 	<dependency>
 		<groupId>org.lwjgl.lwjgl</groupId>
