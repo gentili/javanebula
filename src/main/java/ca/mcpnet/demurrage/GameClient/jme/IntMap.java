@@ -43,7 +43,7 @@ import java.util.Iterator;
  */
 public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
 
-    private Entry[] table;
+    private Entry<T>[] table;
     private final float loadFactor;
     private int size, mask, capacity, threshold;
 
@@ -55,7 +55,8 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
         this(initialCapacity, 0.75f);
     }
 
-    public IntMap(int initialCapacity, float loadFactor) {
+    @SuppressWarnings("unchecked")
+	public IntMap(int initialCapacity, float loadFactor) {
         if (initialCapacity > 1 << 30){
             throw new IllegalArgumentException("initialCapacity is too large.");
         }
@@ -75,7 +76,8 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
         this.mask = capacity - 1;
     }
 
-    @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
     public IntMap<T> clone(){
         try{
             IntMap<T> clone = (IntMap<T>) super.clone();
@@ -91,10 +93,11 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
         return null;
     }
 
-    public boolean containsValue(Object value) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public boolean containsValue(Object value) {
         Entry[] table = this.table;
         for (int i = table.length; i-- > 0;){
-            for (Entry e = table[i]; e != null; e = e.next){
+            for (Entry<T> e = table[i]; e != null; e = e.next){
                 if (e.value.equals(value)){
                     return true;
                 }
@@ -105,7 +108,7 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
 
     public boolean containsKey(int key) {
         int index = ((int) key) & mask;
-        for (Entry e = table[index]; e != null; e = e.next){
+        for (Entry<T> e = table[index]; e != null; e = e.next){
             if (e.key == key){
                 return true;
             }
@@ -115,18 +118,19 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
 
     public T get(int key) {
         int index = key & mask;
-        for (Entry e = table[index]; e != null; e = e.next){
+        for (Entry<T> e = table[index]; e != null; e = e.next){
             if (e.key == key){
-                return (T) e.value;
+                return e.value;
             }
         }
         return null;
     }
 
-    public T put(int key, T value) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public T put(int key, T value) {
         int index = key & mask;
         // Check if key already exists.
-        for (Entry e = table[index]; e != null; e = e.next){
+        for (Entry<T> e = table[index]; e != null; e = e.next){
             if (e.key != key){
                 continue;
             }
@@ -134,7 +138,7 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
             e.value = value;
             return (T) oldValue;
         }
-        table[index] = new Entry(key, value, table[index]);
+        table[index] = new Entry<T>(key, value, table[index]);
         if (size++ >= threshold){
             // Rehash.
             int newCapacity = 2 * capacity;
@@ -142,11 +146,11 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
             Entry[] src = table;
             int bucketmask = newCapacity - 1;
             for (int j = 0; j < src.length; j++){
-                Entry e = src[j];
+                Entry<T> e = src[j];
                 if (e != null){
                     src[j] = null;
                     do{
-                        Entry next = e.next;
+                        Entry<T> next = e.next;
                         index = e.key & bucketmask;
                         e.next = newTable[index];
                         newTable[index] = e;
@@ -164,10 +168,10 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
 
     public T remove(int key) {
         int index = key & mask;
-        Entry prev = table[index];
-        Entry e = prev;
+        Entry<T> prev = table[index];
+        Entry<T> e = prev;
         while (e != null){
-            Entry next = e.next;
+            Entry<T> next = e.next;
             if (e.key == key){
                 size--;
                 if (prev == e){
@@ -175,7 +179,7 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
                 }else{
                     prev.next = next;
                 }
-                return (T) e.value;
+                return e.value;
             }
             prev = e;
             e = next;
@@ -187,7 +191,8 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
         return size;
     }
 
-    public void clear() {
+    @SuppressWarnings("rawtypes")
+	public void clear() {
         Entry[] table = this.table;
         for (int index = table.length; --index >= 0;){
             table[index] = null;
@@ -204,7 +209,7 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
         /**
          * Current entry.
          */
-        private Entry cur;
+        private Entry<T> cur;
 
         /**
          * Entry in the table
@@ -224,12 +229,12 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
             return el < size;
         }
 
-        public Entry next() {
+        public Entry<T> next() {
             if (el >= size)
                 throw new IllegalStateException("No more elements!");
 
             if (cur != null){
-                Entry e = cur;
+                Entry<T> e = cur;
                 cur = cur.next;
                 el++;
                 return e;
@@ -246,7 +251,7 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
                 // the entry was null. find another non-null entry.
                 cur = table[++idx];
             } while (cur == null);
-            Entry e = cur;
+            Entry<T> e = cur;
             cur = cur.next;
             el ++;
             return e;
@@ -261,9 +266,9 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
 
         final int key;
         T value;
-        Entry next;
+        Entry<T> next;
 
-        Entry(int k, T v, Entry n) {
+        Entry(int k, T v, Entry<T> n) {
             key = k;
             value = v;
             next = n;
@@ -281,7 +286,8 @@ public final class IntMap<T> implements Iterable<Entry<T>>, Cloneable {
             return key + " => " + value;
         }
 
-        public Entry<T> clone(){
+        @SuppressWarnings("unchecked")
+		public Entry<T> clone(){
             try{
                 Entry<T> clone = (Entry<T>) super.clone();
                 clone.next = next != null ? next.clone() : null;
