@@ -6,9 +6,11 @@
     <formats>
         <format>zip</format>
     </formats>
+    <baseDirectory>demurrage</baseDirectory>
     <files>
         <file>
             <source>target/${finalName}</source>
+            <destName>${project.artifactId}.jar</destName>
             <outputDirectory>/</outputDirectory>
         </file>
     </files>

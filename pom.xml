@@ -9,6 +9,8 @@
 
   <properties>
     <finalName>${project.artifactId}-${project.version}.jar</finalName>
+    <releaseName>${project.artifactId}-${project.version}-release.zip</releaseName>
+    <releaseVersion>${project.version}</releaseVersion>
     <main.class>ca.mcpnet.demurrage.GameEngine.GameClient.GameClient</main.class>
     <natives>${basedir}/target/natives/</natives>
     <release.natives>natives/</release.natives>
