@@ -11,16 +11,20 @@
         <file>
             <source>target/${finalName}</source>
             <destName>${project.artifactId}.jar</destName>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
         </file>
     </files>
 
     <fileSets>
         <fileSet>
+            <directory>src/text</directory>
+            <outputDirectory></outputDirectory>
+            <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
             <directory>src/main/resources</directory>
             <outputDirectory>resources</outputDirectory>
         </fileSet>
-
         <!-- LWJGL natives -->
         <fileSet>
             <directory>${natives}</directory>
@@ -51,7 +55,17 @@
             <scope>runtime</scope>
             <excludes>
                 <exclude>*:natives-*</exclude>
+                <exclude>*:GameLauncher*</exclude>
             </excludes>
+        </dependencySet>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory></outputDirectory>
+            <scope>runtime</scope>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+            <includes>
+                <include>*:GameLauncher*</include>
+            </includes>
         </dependencySet>
     </dependencySets>
 </assembly>

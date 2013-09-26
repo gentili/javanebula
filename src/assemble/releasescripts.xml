@@ -6,12 +6,30 @@
     <format>dir</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+      <fileSet>
+          <directory>src/text</directory>
+          <outputDirectory></outputDirectory>
+          <filtered>true</filtered>
+      </fileSet>
+  </fileSets>
   <files>
     <file>
       <source>src/scripts/release.sh</source>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory></outputDirectory>
       <fileMode>0744</fileMode>
       <filtered>true</filtered>
     </file>
   </files>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory></outputDirectory>
+            <scope>runtime</scope>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+            <includes>
+                <include>*:GameLauncher*</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
 </assembly>
