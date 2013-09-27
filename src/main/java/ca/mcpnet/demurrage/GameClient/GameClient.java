@@ -38,7 +38,7 @@ public class GameClient {
 		PropertyConfigurator.configure(logprops);
 		
 		Logger log = Logger.getLogger("main()");
-		log.info("Starting GameClient");		
+		log.info("Starting GameClient "+GameClient.class.getPackage().getImplementationVersion());		
 
 		try {
 			new GameClient().run();
