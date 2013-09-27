@@ -782,7 +782,8 @@ public class VertexBuffer extends GLObject implements Cloneable {
         }
     }
 
-    private int convertFormat(Format format) {
+    @SuppressWarnings("unused")
+	private int convertFormat(Format format) {
         switch (format) {
             case Byte:
                 return GL_BYTE;

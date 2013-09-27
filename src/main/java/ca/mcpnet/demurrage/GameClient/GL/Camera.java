@@ -70,7 +70,7 @@ public class Camera {
         return _orientation.getRotationColumn(1);
     }
 
-    private void setPosition(float x, float y, float z) {
+    public void setPosition(float x, float y, float z) {
     	_position.set(x, y, z);
     	recalcViewMatrix();
     }
