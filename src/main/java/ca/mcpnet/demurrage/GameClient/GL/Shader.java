@@ -20,7 +20,7 @@ public class Shader {
 	public Shader(int type, String resource) throws IOException {
 		this.getClass().getClassLoader();
 		// Load in the source
-		URL url = ClassLoader.getSystemResource(resource);
+		URL url = ClassLoader.getSystemResource("/"+resource);
 		System.out.println(url.toString());
 		
 		InputStream istream = this.getClass().getClassLoader().getResourceAsStream(resource);
