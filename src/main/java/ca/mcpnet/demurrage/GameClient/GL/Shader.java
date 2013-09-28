@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 
 import org.apache.commons.io.IOUtils;
@@ -18,6 +19,9 @@ public class Shader {
 
 	public Shader(int type, String resource) throws IOException {
 		// Load in the source
+		URL url = this.getClass().getClassLoader().getResource(resource);
+		System.out.println(url.toString());
+		
 		InputStream istream = this.getClass().getClassLoader().getResourceAsStream(resource);
 		if (istream == null) {
 			throw new RuntimeException("Could not find resource "+resource);
