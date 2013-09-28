@@ -18,8 +18,9 @@ public class Shader {
 	private int _id;
 
 	public Shader(int type, String resource) throws IOException {
+		this.getClass().getClassLoader();
 		// Load in the source
-		URL url = this.getClass().getClassLoader().getResource(resource);
+		URL url = ClassLoader.getSystemResource(resource);
 		System.out.println(url.toString());
 		
 		InputStream istream = this.getClass().getClassLoader().getResourceAsStream(resource);
