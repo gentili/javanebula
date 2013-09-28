@@ -19,6 +19,9 @@ public class Shader {
 	public Shader(int type, String resource) throws IOException {
 		// Load in the source
 		InputStream istream = this.getClass().getClassLoader().getResourceAsStream(resource);
+		if (istream == null) {
+			throw new RuntimeException("Could not find resource "+resource);
+		}
 		String src;
 		try {
 			src = IOUtils.toString(istream);
