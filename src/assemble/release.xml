@@ -21,10 +21,12 @@
             <outputDirectory></outputDirectory>
             <filtered>true</filtered>
         </fileSet>
+        <!-- These are in the GameClient.jar for now
         <fileSet>
             <directory>src/main/resources</directory>
             <outputDirectory>resources</outputDirectory>
         </fileSet>
+        -->
         <!-- LWJGL natives -->
         <fileSet>
             <directory>${natives}</directory>
