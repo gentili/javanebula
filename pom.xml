@@ -11,7 +11,7 @@
     <finalName>${project.artifactId}-${project.version}.jar</finalName>
     <releaseName>${project.artifactId}-${project.version}-release.zip</releaseName>
     <releaseVersion>${project.version}</releaseVersion>
-    <main.class>ca.mcpnet.demurrage.GameEngine.GameClient.GameClient</main.class>
+    <main.class>ca.mcpnet.demurrage.GameClient.GameClient</main.class>
     <natives>${basedir}/target/natives/</natives>
     <release.natives>natives/</release.natives>
   </properties>
@@ -66,7 +66,7 @@
                     </configuration>
                 </execution>
                 <execution>
-                    <id>assemble-distribution-scripts</id>
+                    <id>assemble-release-scripts</id>
                     <phase>package</phase>
                     <goals>
                         <goal>single</goal>
