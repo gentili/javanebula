@@ -32,7 +32,7 @@ public class GameClient {
 	public static void main(String[] args) {
 		System.out.println("MAIN FUNCTION ENTRYPOINT");
 		Properties logprops = new Properties();
-		logprops.setProperty("log4j.rootLogger", "DEBUG, A1");
+		logprops.setProperty("log4j.rootLogger", "INFO, A1");
 		logprops.setProperty("log4j.appender.A1", "org.apache.log4j.ConsoleAppender");
 		logprops.setProperty("log4j.appender.A1.layout", "org.apache.log4j.PatternLayout");
 		logprops.setProperty("log4j.appender.A1.layout.ConversionPattern", "%-4r [%-20t] %-5p %c.%M %x - %m%n");

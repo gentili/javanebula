@@ -20,10 +20,8 @@ public class Shader {
 
 	public Shader(int type, String resource) throws IOException {
 		// Load in the source
-		//URL url = GameClient.class.getResource(resource);
-		//System.out.println(url.toString());
 		
-		InputStream istream = GameClient.class.getResourceAsStream(""+resource);
+		InputStream istream = GameClient.class.getResourceAsStream(resource);
 		if (istream == null) {
 			throw new RuntimeException("Could not find resource "+resource);
 		}
