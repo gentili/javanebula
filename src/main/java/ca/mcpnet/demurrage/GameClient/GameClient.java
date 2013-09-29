@@ -1,6 +1,7 @@
 package ca.mcpnet.demurrage.GameClient;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 

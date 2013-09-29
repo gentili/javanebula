@@ -29,32 +29,32 @@ public class ShaderProgramManager {
 		_shaderProgramList = new Vector<ShaderProgram>();
 
 		_simpleIndexedColorShaderProgram = new ShaderProgram();
-		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/simpleIndexedColor.vert"));
-		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/simpleIndexedColor.frag"));
+		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/simpleIndexedColor.vrt"));
+		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/simpleIndexedColor.frg"));
 		_simpleIndexedColorShaderProgram.attachAndLink();
 		_shaderProgramList.add(_simpleIndexedColorShaderProgram);
 
 		_cameraIsLightShaderProgram = new ShaderProgram();
-        _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/cameraIsLight.vert"));
-        _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/cameraIsLight.frag"));
+        _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/cameraIsLight.vrt"));
+        _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/cameraIsLight.frg"));
         _cameraIsLightShaderProgram.attachAndLink();
         _shaderProgramList.add(_cameraIsLightShaderProgram);
         
         _concursionPointShaderProgram = new ShaderProgram();
-        _concursionPointShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionPoint.vert"));
-        _concursionPointShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionPoint.frag"));
+        _concursionPointShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionPoint.vrt"));
+        _concursionPointShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionPoint.frg"));
         _concursionPointShaderProgram.attachAndLink();
         _shaderProgramList.add(_concursionPointShaderProgram);
 
         _concursionEdgeShaderProgram = new ShaderProgram();
-        _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionEdge.vert"));
-        _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionEdge.frag"));
+        _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionEdge.vrt"));
+        _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionEdge.frg"));
         _concursionEdgeShaderProgram.attachAndLink();
         _shaderProgramList.add(_concursionEdgeShaderProgram);
         
         _glowSphereShaderProgram = new ShaderProgram();
-        _glowSphereShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/glowSphere.vert"));
-        _glowSphereShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/glowSphere.frag"));
+        _glowSphereShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/glowSphere.vrt"));
+        _glowSphereShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/glowSphere.frg"));
         _glowSphereShaderProgram.attachAndLink();
         _shaderProgramList.add(_glowSphereShaderProgram);
         
