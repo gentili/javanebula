@@ -30,7 +30,6 @@ public class GameClient {
 	Logger _log = Logger.getLogger("GameClient");
 	
 	public static void main(String[] args) {
-		System.out.println("MAIN FUNCTION ENTRYPOINT");
 		Properties logprops = new Properties();
 		logprops.setProperty("log4j.rootLogger", "INFO, A1");
 		logprops.setProperty("log4j.appender.A1", "org.apache.log4j.ConsoleAppender");
