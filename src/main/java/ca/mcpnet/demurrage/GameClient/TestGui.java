@@ -14,7 +14,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
@@ -211,40 +211,37 @@ public class TestGui {
 			throw new RuntimeException("FBO blit not supported");
 				
 		// Setup up colour buffer
-		int RBcolorid = EXTFramebufferObject.glGenRenderbuffersEXT();
-		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBcolorid);
-		EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 
-				GL11.GL_RGBA, Display.getWidth(), Display.getHeight());
+		int RBcolorid = ARBFramebufferObject.glGenRenderbuffers();
+		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, RBcolorid);
+		ARBFramebufferObject.glRenderbufferStorage(ARBFramebufferObject.GL_RENDERBUFFER, 
+				GL11.GL_RGBA, Display.getWidth()/2, Display.getHeight()/2);
 		Util.checkGLError();
-		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 0);
+		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, 0);
 		// Setup depth buffer
-		int RBdepthid = EXTFramebufferObject.glGenRenderbuffersEXT();
-		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBdepthid);
-		EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 
-				GL11.GL_DEPTH_COMPONENT, Display.getWidth(), Display.getHeight());
-		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 0);
+		int RBdepthid = ARBFramebufferObject.glGenRenderbuffers();
+		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, RBdepthid);
+		ARBFramebufferObject.glRenderbufferStorage(ARBFramebufferObject.GL_RENDERBUFFER, 
+				GL11.GL_DEPTH_COMPONENT, Display.getWidth()/2, Display.getHeight()/2);
+		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, 0);
 		// Setup the frame buffer
-		int FBOid = EXTFramebufferObject.glGenFramebuffersEXT();
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, FBOid);
+		int FBOid = ARBFramebufferObject.glGenFramebuffers();
+		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, FBOid);
 		
-		EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-				EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBcolorid);
-		EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-				EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBdepthid);
+		ARBFramebufferObject.glFramebufferRenderbuffer(ARBFramebufferObject.GL_FRAMEBUFFER,
+				ARBFramebufferObject.GL_COLOR_ATTACHMENT0, ARBFramebufferObject.GL_RENDERBUFFER, RBcolorid);
+		ARBFramebufferObject.glFramebufferRenderbuffer(ARBFramebufferObject.GL_FRAMEBUFFER,
+				ARBFramebufferObject.GL_DEPTH_ATTACHMENT, ARBFramebufferObject.GL_RENDERBUFFER, RBdepthid);
 		// Verify setup
-		if (EXTFramebufferObject.glCheckFramebufferStatusEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT) != EXTFramebufferObject.GL_FRAMEBUFFER_COMPLETE_EXT) {
+		if (ARBFramebufferObject.glCheckFramebufferStatus(ARBFramebufferObject.GL_FRAMEBUFFER) != ARBFramebufferObject.GL_FRAMEBUFFER_COMPLETE) {
 			throw new RuntimeException("blort");
 		}
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
+		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, 0);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
         while(!Display.isCloseRequested()) {
     		double time = System.currentTimeMillis();
     		time = System.nanoTime()/1000000;
     		float a = (float) (time/2000 % (FastMath.TWO_PI));
         	// Do the graphics stuff
-        	GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-        	GL11.glScissor(0, 0, Display.getWidth(), Display.getHeight());
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
     		Vector3f mouseVector = new Vector3f(Mouse.getX(),Mouse.getY(),0);
     		float dx = Mouse.getDX();
     		float dy = Mouse.getDY();
@@ -266,43 +263,49 @@ public class TestGui {
 
     		_shaderProgramManager.setShaderProgramMatrixes(null, _camera.getViewMatrixFloatBuffer());
 
-    		for (int i =0; i < 2; i++) {
-	    		float scale = FastMath.sin(a)+1;
-	    		_axis.setScale(1f,1f,1f);
-	    		_axis.draw();
-	    		
-	    		_wireSphere.setScale(scale/2, scale/2, scale/2);
-	    		_wireSphere.setColor(1f, 1f, 1f, 1f);
-	    		_wireSphere.draw();
-	    		
-	    		glEnable(GL11.GL_BLEND);
-	    		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-	    		glDisable(GL_DEPTH_TEST);
-	
-	    		_glowSphere.setColor(0.1f, 0.1f, 0.2f, 1.0f);
-	    		_glowSphere.setTranslation(Vector3f.ZERO);
-	    		_glowSphere.draw();
-	    		_glowSphere.setTranslation(Vector3f.UNIT_X);
-	    		_glowSphere.draw();
-	    		_glowSphere.setTranslation(Vector3f.UNIT_Y);
-	    		_glowSphere.draw();
-	    		_glowSphere.setTranslation(Vector3f.UNIT_Z);
-	    		_glowSphere.setScale(scale,scale,scale);
-	    		_glowSphere.setColor(1.0f, 0f, 0f, 1.0f);
-	    		_glowSphere.draw();
-	    		glEnable(GL_DEPTH_TEST);
-	    		glDisable(GL11.GL_BLEND);
-	    		
-	    		if (i == 0) {
-		        	GL11.glViewport(100, 100, 200, 500);
-		        	GL11.glScissor(100, 100, 200, 500);
-		            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-	    		}
-    		}
-    		
-        	GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+    		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
         	GL11.glScissor(0, 0, Display.getWidth(), Display.getHeight());
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 
+    		// PIXELLATED
+    		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, FBOid);
+        	GL11.glViewport(0, 0, Display.getWidth()/2, Display.getHeight()/2);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+
+            float scale = FastMath.sin(a)+1;
+    		_axis.setScale(1f,1f,1f);
+    		_axis.draw();
+            
+       		_wireSphere.setScale(scale/2, scale/2, scale/2);
+    		_wireSphere.setColor(1f, 1f, 1f, 1f);
+    		_wireSphere.draw();
+    		
+    		glEnable(GL11.GL_BLEND);
+    		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+    		glDisable(GL_DEPTH_TEST);
+
+    		_glowSphere.setColor(0.1f, 0.1f, 0.2f, 1.0f);
+    		_glowSphere.setTranslation(Vector3f.ZERO);
+    		_glowSphere.draw();
+    		_glowSphere.setTranslation(Vector3f.UNIT_X);
+    		_glowSphere.draw();
+    		_glowSphere.setTranslation(Vector3f.UNIT_Y);
+    		_glowSphere.draw();
+    		_glowSphere.setTranslation(Vector3f.UNIT_Z);
+    		_glowSphere.setScale(scale,scale,scale);
+    		_glowSphere.setColor(1.0f, 0f, 0f, 1.0f);
+    		_glowSphere.draw();
+    		glEnable(GL_DEPTH_TEST);
+    		glDisable(GL11.GL_BLEND);
+	    		
+    		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_READ_FRAMEBUFFER, FBOid);
+    		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_DRAW_FRAMEBUFFER, 0);
+    		ARBFramebufferObject.glBlitFramebuffer(0, 0, Display.getWidth()/2, Display.getHeight()/2, 
+    				0, 0, Display.getWidth(), Display.getHeight(), 
+    				GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+    		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, 0);
+
+        	GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
         	// Find out the pixel coords of this node
     		Vector3f sizeVector = new Vector3f(Vector3f.UNIT_X);
 			_camera.applyViewMatrix(sizeVector);
