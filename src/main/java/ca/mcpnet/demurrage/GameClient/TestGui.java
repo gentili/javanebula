@@ -14,8 +14,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.Util;
 
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
@@ -202,6 +205,37 @@ public class TestGui {
 		_camera.setTarget(Vector3f.ZERO);
 		_camera.lookAtTarget();
 		
+		if (!GLContext.getCapabilities().GL_EXT_framebuffer_object)
+			throw new RuntimeException("FBOs not supported");
+		if (!GLContext.getCapabilities().GL_EXT_framebuffer_blit)
+			throw new RuntimeException("FBO blit not supported");
+				
+		// Setup up colour buffer
+		int RBcolorid = EXTFramebufferObject.glGenRenderbuffersEXT();
+		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBcolorid);
+		EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 
+				GL11.GL_RGBA, Display.getWidth(), Display.getHeight());
+		Util.checkGLError();
+		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 0);
+		// Setup depth buffer
+		int RBdepthid = EXTFramebufferObject.glGenRenderbuffersEXT();
+		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBdepthid);
+		EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 
+				GL11.GL_DEPTH_COMPONENT, Display.getWidth(), Display.getHeight());
+		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 0);
+		// Setup the frame buffer
+		int FBOid = EXTFramebufferObject.glGenFramebuffersEXT();
+		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, FBOid);
+		
+		EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
+				EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBcolorid);
+		EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
+				EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, RBdepthid);
+		// Verify setup
+		if (EXTFramebufferObject.glCheckFramebufferStatusEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT) != EXTFramebufferObject.GL_FRAMEBUFFER_COMPLETE_EXT) {
+			throw new RuntimeException("blort");
+		}
+		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
         while(!Display.isCloseRequested()) {
     		double time = System.currentTimeMillis();
