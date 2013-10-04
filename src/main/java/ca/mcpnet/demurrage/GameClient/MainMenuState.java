@@ -17,6 +17,7 @@ import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
 import ca.mcpnet.demurrage.GameClient.GL.FarStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
+import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
 import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
@@ -39,6 +40,7 @@ public class MainMenuState extends ClientState {
 	private FarStar _farStar;
 	private FarStar _farStarInner;
 	private GlowSphere _glowSphere;
+	private PixellationFBO _pixellationFBO;
 	
 	MainMenuState(GameClient gc) {
 		super(gc);
@@ -49,6 +51,7 @@ public class MainMenuState extends ClientState {
 		_farStar = new FarStar(0.5f);
 		_farStarInner = new FarStar(0.2f);
 		_glowSphere = new GlowSphere(2f);
+		_pixellationFBO = new PixellationFBO();
 		
 		_camera = new Camera();
 		_camera.setUpVector(Vector3f.UNIT_Y);
@@ -73,13 +76,13 @@ public class MainMenuState extends ClientState {
 		projectionMatrix.fromPerspective(60.0f, aspect, 1.0f, 6.0f);
 		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(projectionMatrix.toFloatBuffer(), null);
 
-		glEnable(GL_DEPTH_TEST);
-
 		_gameClient.getGUI().setRootPane(_rootPane);
 		_mainMenuRootPane.setLoginFocus();
 
 		_camera.setTarget(Vector3f.ZERO);
+		_camera.setUpVector(Vector3f.UNIT_Y);
 		_camera.setRadius(5.0f);
+		_camera.lookAtTarget();
 	}
 	
 	@Override
@@ -94,7 +97,8 @@ public class MainMenuState extends ClientState {
 		float a = (float) (time/2000 % (FastMath.TWO_PI));
 
 		// Set up camera and view matrix
-		_camera.lookAtTarget();
+		_camera.addHorizontalRotationAboutTarget(0.01f);
+		_camera.update();
 		
 		// Update the View Matrixes
 		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(null, _camera.getViewMatrixFloatBuffer());
@@ -115,20 +119,24 @@ public class MainMenuState extends ClientState {
 		_wiresphere.setTranslation(0f, 0f, 0f);
 		_wiresphere.draw();
 		*/
-        
+        _pixellationFBO.begin();
 		// Draw star
 		glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		glDisable(GL_DEPTH_TEST);
-		_farStar.setTranslation(0f, 0.5f, 0f);
+		glDisable(GL11.GL_DITHER);
+		_farStar.setTranslation(0.5f, 0.5f, 0f);
 		_farStar.setColor(0f, 0f, 0.1f, 1f);
 		_farStar.draw();
-		_farStarInner.setTranslation(0f, 0.5f, 0f);
+		_farStarInner.setTranslation(0.5f, 0.5f, 0f);
 		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
 		_farStarInner.draw();
-		_glowSphere.setTranslation(0f, 0.5f, 0f);
-		_glowSphere.setColor(0.1f, 0.0f, 0.1f, 1f);
+		glEnable(GL11.GL_DITHER);
+		_glowSphere.setTranslation(0.5f, 0.5f, 0f);
+		_glowSphere.setColor(0.0f, 0.0f, 0.2f, 1f);
 		_glowSphere.draw();
+		
+		_pixellationFBO.end();
 		/*
 		 * HOWTO retrieve an openGL matrix and load it into an uniform
 		 *
