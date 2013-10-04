@@ -11,12 +11,14 @@ import org.lwjgl.opengl.GL20;
 
 import ca.mcpnet.demurrage.GameClient.ShaderProgramManager;
 import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
+import ca.mcpnet.demurrage.GameClient.jme.FastMath;
+import ca.mcpnet.demurrage.GameClient.jme.Quaternion;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Format;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Usage;
 
-public class GlowSphere extends Renderable {
+public class FarStar extends Renderable {
 	
 	static private ShaderProgramManager _shaderProgramManager;
 	
@@ -25,65 +27,61 @@ public class GlowSphere extends Renderable {
 	}
 
 	private VertexBuffer _vbindex;
-	private VertexBuffer _vbpos;	
+	private VertexBuffer _vbpos;
+
 	private int _vertexAttrIndex_pos;
 	private int _uniformIndex_color;
-	
 	private float _R;
 	private float _G;
 	private float _B;
 	private float _A;
-		
-	public GlowSphere(float scale) {
-		super (_shaderProgramManager.glowSphereShaderProgram());
+	
+	public FarStar(float scale) {
+		super (_shaderProgramManager.concursionPointShaderProgram());
 		
 		_vertexAttrIndex_pos = _shaderProgram.getAttribLocation("pos");
 		_uniformIndex_color = _shaderProgram.getUniformLocation("color");
-				
-		// Make a square out of triangles
-		Vector3f vertex = new Vector3f();
+		
+		Vector3f vertexA = new Vector3f();
+		Vector3f vertexB = new Vector3f();
+		Vector3f vertexC = new Vector3f();
 		Vector<Vector3f> vertexArray = new Vector<Vector3f>();
 		Vector<Integer> indexArray = new Vector<Integer>();
 		Integer curindex = 0;
-
-		// First half
-		vertex.x = -0.5f*scale;
-		vertex.y =  0.5f*scale;
-		vertex.z =  0.0f;
-		vertexArray.add(vertex.clone());
-		indexArray.add(curindex++);
 		
-		vertex.x = 0.5f*scale;
-		vertex.y = 0.5f*scale;
-		vertex.z = 0.0f;
-		vertexArray.add(vertex.clone());
-		indexArray.add(curindex++);
+		vertexA.x = -0.5f*scale;
+		vertexA.y = 0.0f;
+		vertexA.z = 0.0f;
 		
-		vertex.x =  0.5f*scale;
-		vertex.y = -0.5f*scale;
-		vertex.z = 0.0f;
-		vertexArray.add(vertex.clone());
-		indexArray.add(curindex++);
+		vertexB.x = 0.5f*scale;
+		vertexB.y = 0.0f;
+		vertexB.z = 0.0f;
+		
+		vertexC.x = 0.0f;
+		vertexC.y = 1.0f*scale;
+		vertexC.z = 0.0f;
 	
-		// Second half
-		vertex.x = -0.5f*scale;
-		vertex.y =  0.5f*scale;
-		vertex.z =  0.0f;
-		vertexArray.add(vertex.clone());
-		indexArray.add(curindex++);
+		Quaternion zeroQ = new Quaternion();
+		zeroQ.fromAngleNormalAxis(0, new Vector3f(0.0f,0.0f,1.0f));
 		
-		vertex.x = -0.5f*scale;
-		vertex.y = -0.5f*scale;
-		vertex.z = 0.0f;
-		vertexArray.add(vertex.clone());
-		indexArray.add(curindex++);
-		
-		vertex.x =  0.5f*scale;
-		vertex.y = -0.5f*scale;
-		vertex.z = 0.0f;
-		vertexArray.add(vertex.clone());
-		indexArray.add(curindex++);
+		Quaternion halfpiQ = new Quaternion();
+		halfpiQ.fromAngleNormalAxis(FastMath.HALF_PI, new Vector3f(0.0f,0.0f,1.0f));
 
+		Quaternion piQ = new Quaternion();
+		piQ.fromAngleNormalAxis(FastMath.PI, new Vector3f(0.0f,0.0f,1.0f));
+
+		Quaternion minushalfpiQ = new Quaternion();
+		minushalfpiQ.fromAngleNormalAxis(-FastMath.HALF_PI, new Vector3f(0.0f,0.0f,1.0f));
+
+		for (int i = 0; i < 4; i++) {
+			curindex = addTriangle(zeroQ,vertexArray,indexArray,curindex,vertexA,vertexB,vertexC);
+			curindex = addTriangle(halfpiQ,vertexArray,indexArray,curindex,vertexA,vertexB,vertexC);
+			curindex = addTriangle(piQ,vertexArray,indexArray,curindex,vertexA,vertexB,vertexC);
+			curindex = addTriangle(minushalfpiQ,vertexArray,indexArray,curindex,vertexA,vertexB,vertexC);
+			vertexA.x *= 0.6f;
+			vertexB.x *= 0.6f;
+			vertexC.y *= 1.5f;
+		}
 		
 		///////////////
 		// GLSL setup
@@ -105,13 +103,25 @@ public class GlowSphere extends Renderable {
 		
 	}
 
+	private int addTriangle(Quaternion Q, Vector<Vector3f> vertexArray,
+			Vector<Integer> indexArray, Integer curindex, Vector3f vertexA,
+			Vector3f vertexB, Vector3f vertexC) {
+		vertexArray.add(Q.mult(vertexA));
+		indexArray.add(curindex++);
+		vertexArray.add(Q.mult(vertexB));
+		indexArray.add(curindex++);
+		vertexArray.add(Q.mult(vertexC));
+		indexArray.add(curindex++);
+		return curindex;
+	}
+
 	public void setColor(float r, float g, float b, float a) {
 		_R = r;
 		_G = g;
 		_B = b;
 		_A = a;
 	}
-	
+
 	public void draw() {
 		_modelMatrixFloatBuffer.rewind();
         // GL20.glUseProgram(_shaderProgram.getID()); <-- This is implied by the setModelMatrix() call

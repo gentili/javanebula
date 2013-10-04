@@ -1,6 +1,7 @@
 package ca.mcpnet.demurrage.GameClient;
 
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.nio.ByteBuffer;
@@ -12,6 +13,10 @@ import org.lwjgl.opengl.GL11;
 
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
+import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
+import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
+import ca.mcpnet.demurrage.GameClient.GL.FarStar;
+import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
@@ -27,20 +32,23 @@ import de.matthiasmann.twl.textarea.SimpleTextAreaModel;
 
 public class MainMenuState extends ClientState {
 
-	private Axis _axis;
-	private WireSphere[] _wiresphere;
 	private Camera _camera;
 	RootPane _mainMenuRootPane;
+	private Axis _axis;
+	private WireSphere _wiresphere;
+	private FarStar _farStar;
+	private FarStar _farStarInner;
+	private GlowSphere _glowSphere;
 	
 	MainMenuState(GameClient gc) {
 		super(gc);
 		_rootPane = _mainMenuRootPane = new RootPane(gc);
 		
 		_axis = new Axis();
-		_wiresphere = new WireSphere[3];
-		_wiresphere[0] = new WireSphere();
-		_wiresphere[1] = new WireSphere();
-		_wiresphere[2] = new WireSphere();
+		_wiresphere = new WireSphere();
+		_farStar = new FarStar(0.5f);
+		_farStarInner = new FarStar(0.2f);
+		_glowSphere = new GlowSphere(2f);
 		
 		_camera = new Camera();
 		_camera.setUpVector(Vector3f.UNIT_Y);
@@ -81,33 +89,46 @@ public class MainMenuState extends ClientState {
 
 	@Override
 	public void update() {
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 		double time = System.currentTimeMillis();
 		time = System.nanoTime()/1000000;
 		float a = (float) (time/2000 % (FastMath.TWO_PI));
 
 		// Set up camera and view matrix
-		// _camera.rotateHorizontalAboutTarget(a)*5.0f, 0.0f, FastMath.cos(a)*5.0f);
-		// _camera.addHorizontalRotationAboutTarget(0.01f);
 		_camera.lookAtTarget();
 		
 		// Update the View Matrixes
 		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(null, _camera.getViewMatrixFloatBuffer());
 
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+
+        /*
+        GL11.glDisable(GL11.GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
 		// Draw the helper axis
+		
 		_axis.setRotation(0, 0, 1f, 0);
 		_axis.setTranslation(0f,0f,0f);
-		// _axis.draw();
+		_axis.draw();
+
 		// Draw the spheres
-		_wiresphere[0].setRotation(FastMath.sin(a), 0, 1, 0);
-		_wiresphere[0].setTranslation(0f, 0f, 0f);
-		_wiresphere[0].draw();
-		_wiresphere[1].setRotation(FastMath.sin(a)*2, 0, 1, 0);
-		_wiresphere[1].setTranslation(2.0f, (float) (FastMath.sin(a)*2.0), 0f);
-		_wiresphere[1].draw();
-		_wiresphere[2].setRotation(FastMath.sin(a), 0, 1, 0);
-		_wiresphere[2].setTranslation(-2.0f, 0.0f, (float) (FastMath.sin(a)*2.0));
-		_wiresphere[2].draw();
+		_wiresphere.setRotation(FastMath.sin(a), 0, 1, 0);
+		_wiresphere.setTranslation(0f, 0f, 0f);
+		_wiresphere.draw();
+		*/
+        
+		// Draw star
+		glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+		glDisable(GL_DEPTH_TEST);
+		_farStar.setTranslation(0f, 0.5f, 0f);
+		_farStar.setColor(0f, 0f, 0.1f, 1f);
+		_farStar.draw();
+		_farStarInner.setTranslation(0f, 0.5f, 0f);
+		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
+		_farStarInner.draw();
+		_glowSphere.setTranslation(0f, 0.5f, 0f);
+		_glowSphere.setColor(0.1f, 0.0f, 0.1f, 1f);
+		_glowSphere.draw();
 		/*
 		 * HOWTO retrieve an openGL matrix and load it into an uniform
 		 *

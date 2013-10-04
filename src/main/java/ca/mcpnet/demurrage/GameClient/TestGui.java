@@ -90,7 +90,7 @@ public class TestGui {
 		_projection = new Projection();
 		_camera = new Camera();
 		_axis = new Axis();
-		_glowSphere = new GlowSphere();
+		_glowSphere = new GlowSphere(0.1f);
 		_wireSphere = new WireSphere();
 
         // TWL Menu Init
@@ -214,7 +214,7 @@ public class TestGui {
 		int RBcolorid = ARBFramebufferObject.glGenRenderbuffers();
 		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, RBcolorid);
 		ARBFramebufferObject.glRenderbufferStorage(ARBFramebufferObject.GL_RENDERBUFFER, 
-				GL11.GL_RGBA, Display.getWidth()/2, Display.getHeight()/2);
+				GL11.GL_RGBA2, Display.getWidth()/2, Display.getHeight()/2);
 		Util.checkGLError();
 		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, 0);
 		// Setup depth buffer
@@ -237,6 +237,7 @@ public class TestGui {
 		}
 		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, 0);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
+		GL11.glDisable(GL11.GL_DITHER);
         while(!Display.isCloseRequested()) {
     		double time = System.currentTimeMillis();
     		time = System.nanoTime()/1000000;

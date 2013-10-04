@@ -63,7 +63,7 @@ public class ConcursionState extends ClientState {
 		
 		_concursionPoint = new ConcursionPoint();
 		_concursionEdge = new ConcursionEdge();
-		_glowSphere = new GlowSphere();
+		_glowSphere = new GlowSphere(0.1f);
 		_wireSphere = new WireSphere();
 		// Sub Window
 		_subWindowRect = new Rect();

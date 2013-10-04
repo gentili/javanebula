@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL20;
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
+import ca.mcpnet.demurrage.GameClient.GL.FarStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.Shader;
 import ca.mcpnet.demurrage.GameClient.GL.ShaderProgram;
@@ -63,6 +64,7 @@ public class ShaderProgramManager {
         ConcursionPoint.setShaderProgramManager(this);
         GlowSphere.setShaderProgramManager(this);
         WireSphere.setShaderProgramManager(this);
+        FarStar.setShaderProgramManager(this);
 	}
 	
 	public ShaderProgram simpleIndexedColorShaderProgram() {
