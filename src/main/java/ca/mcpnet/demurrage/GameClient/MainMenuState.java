@@ -48,9 +48,9 @@ public class MainMenuState extends ClientState {
 		
 		_axis = new Axis();
 		_wiresphere = new WireSphere();
-		_farStar = new FarStar(0.5f);
-		_farStarInner = new FarStar(0.2f);
-		_glowSphere = new GlowSphere(2f);
+		_farStar = new FarStar(0.25f);
+		_farStarInner = new FarStar(0.1f);
+		_glowSphere = new GlowSphere(1f);
 		_pixellationFBO = new PixellationFBO();
 		
 		_camera = new Camera();
@@ -73,7 +73,7 @@ public class MainMenuState extends ClientState {
 		// Set up the projection matrix
 		Matrix4f projectionMatrix = new Matrix4f();
 		float aspect = (float) Display.getWidth()/ (float) Display.getHeight();
-		projectionMatrix.fromPerspective(60.0f, aspect, 1.0f, 6.0f);
+		projectionMatrix.fromPerspective(60.0f, aspect, 1.0f, 8.0f);
 		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(projectionMatrix.toFloatBuffer(), null);
 
 		_gameClient.getGUI().setRootPane(_rootPane);
@@ -125,15 +125,25 @@ public class MainMenuState extends ClientState {
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL11.GL_DITHER);
-		_farStar.setTranslation(0.5f, 0.5f, 0f);
-		_farStar.setColor(0f, 0f, 0.1f, 1f);
+		_farStar.setTranslation(3f, 0.0f, 0f);
+		_farStar.setColor(0.1f, 0f, 0.1f, 1f);
 		_farStar.draw();
-		_farStarInner.setTranslation(0.5f, 0.5f, 0f);
+		_farStarInner.setTranslation(3f, 0.0f, 0f);
 		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
 		_farStarInner.draw();
+		_farStar.setTranslation(-3f, 0.0f, 0f);
+		_farStar.setColor(0f, 0f, 0.1f, 1f);
+		_farStar.draw();
+		_farStarInner.setTranslation(-3f, 0.0f, 0f);
+		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
+		_farStarInner.draw();
+		GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_COLOR,GL11.GL_ONE_MINUS_SRC_COLOR);
 		glEnable(GL11.GL_DITHER);
-		_glowSphere.setTranslation(0.5f, 0.5f, 0f);
-		_glowSphere.setColor(0.0f, 0.0f, 0.2f, 1f);
+		_glowSphere.setTranslation(-3f, 0.0f, 0f);
+		_glowSphere.setColor(0.0f, 0.0f, 0.4f, 1f);
+		_glowSphere.draw();
+		_glowSphere.setTranslation(3f, 0.0f, 0f);
+		_glowSphere.setColor(0.4f, 0.0f, 0.4f, 1f);
 		_glowSphere.draw();
 		
 		_pixellationFBO.end();
