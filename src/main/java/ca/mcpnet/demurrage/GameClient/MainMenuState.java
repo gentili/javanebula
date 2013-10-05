@@ -223,7 +223,7 @@ public class MainMenuState extends ClientState {
 			_logPane.setEnabled(false);
 			_logPane.setVisible(true);
 			_logBuf = new StringBuilder();
-			appendToLogPane("*** DEMURRAGE GAMECLIENT "+getClass().getPackage().getImplementationVersion()+" ***\n\n");
+			appendToLogPane("*** DEMURRAGE GAMECLIENT "+GameClient.VERSION+" ***\n\n");
 			_logPane.validateLayout();
 
 			add(_logPane);

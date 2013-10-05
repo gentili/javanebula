@@ -27,6 +27,7 @@ import de.matthiasmann.twl.theme.ThemeManager;
  *
  */
 public class GameClient {
+	static public String VERSION;
 	Logger _log = Logger.getLogger("GameClient");
 	
 	public static void main(String[] args) {
@@ -38,14 +39,18 @@ public class GameClient {
 		PropertyConfigurator.configure(logprops);
 		
 		Logger log = Logger.getLogger("main()");
-		log.info("Starting GameClient "+GameClient.class.getPackage().getImplementationVersion());
-		log.info("java.library.path="+System.getProperty("java.library.path"));
+		log.info("Starting GameClient "+VERSION);
+		log.debug("java.library.path="+System.getProperty("java.library.path"));
 		try {
 			new GameClient().run();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
+			if (e.getCause() != null) {
+				System.out.println("Caused by:");
+				e.getCause().printStackTrace();
+			}
+			System.exit(1);
 		}
 		log.info("Main Thread Exiting");
 	}    
@@ -71,9 +76,15 @@ public class GameClient {
 	private ConcurrentLinkedQueue<GameClientTask> _gameClientTaskQueue;
 
 	public GameClient() throws LWJGLException, IOException {
+		VERSION = GameClient.class.getPackage().getImplementationVersion();
+		if (VERSION == null) {
+			VERSION = "DEV-SNAPSHOT";
+		}
+
 		// Display Init
 		// Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
+		Display.setFullscreen(true);
 		Display.setTitle("Demurrage GameClient");
 		Display.setVSyncEnabled(true);
 		
