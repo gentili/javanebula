@@ -38,8 +38,8 @@ public class GameClient {
 		logprops.setProperty("log4j.appender.A1.layout.ConversionPattern", "%-4r [%-20t] %-5p %c.%M %x - %m%n");
 		PropertyConfigurator.configure(logprops);
 		
-		Logger log = Logger.getLogger("main()");
-		log.info("Starting GameClient "+VERSION);
+		Logger log = Logger.getLogger("GameClient");
+		log.info("Starting GameClient");
 		log.debug("java.library.path="+System.getProperty("java.library.path"));
 		try {
 			new GameClient().run();
@@ -81,11 +81,12 @@ public class GameClient {
 			VERSION = "DEV-SNAPSHOT";
 		}
 
+		_log.info("Initializing GameClient "+VERSION);
 		// Display Init
 		// Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
 		Display.setFullscreen(true);
-		Display.setTitle("Demurrage GameClient");
+		Display.setTitle("Demurrage GameClient "+VERSION);
 		Display.setVSyncEnabled(true);
 		
 		PixelFormat pixelFormat = new PixelFormat();
