@@ -58,6 +58,11 @@ public abstract class Renderable {
 	
 	public void setScale(float r) {
 		_scale.set(r,r,r);
+		recalcModelMatrix();
+	}
+
+	public Vector3f getScale() {
+		return _scale;
 	}
 
 	private void recalcModelMatrix() {
@@ -73,4 +78,5 @@ public abstract class Renderable {
 	}
 	
 	public abstract void draw();
+
 }

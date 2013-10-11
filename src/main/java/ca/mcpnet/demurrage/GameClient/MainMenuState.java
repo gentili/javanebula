@@ -10,6 +10,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
@@ -40,6 +41,7 @@ public class MainMenuState extends ClientState {
 	private FarStar _farStar;
 	private FarStar _farStarInner;
 	private GlowSphere _glowSphere;
+	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
 	
 	MainMenuState(GameClient gc) {
@@ -51,6 +53,7 @@ public class MainMenuState extends ClientState {
 		_farStar = new FarStar(0.25f);
 		_farStarInner = new FarStar(0.1f);
 		_glowSphere = new GlowSphere(1f);
+		_nebula = new Nebula();
 		_pixellationFBO = new PixellationFBO();
 		
 		_camera = new Camera();
@@ -125,6 +128,7 @@ public class MainMenuState extends ClientState {
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL11.GL_DITHER);
+		/*
 		_farStar.setTranslation(3f, 0.0f, 0f);
 		_farStar.setColor(0.1f, 0f, 0.1f, 1f);
 		_farStar.draw();
@@ -137,16 +141,20 @@ public class MainMenuState extends ClientState {
 		_farStarInner.setTranslation(-3f, 0.0f, 0f);
 		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
 		_farStarInner.draw();
-		GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_COLOR,GL11.GL_ONE_MINUS_SRC_COLOR);
+		*/
+		GL14.glBlendEquation(GL14.GL_MAX);
 		glEnable(GL11.GL_DITHER);
+		/*
 		_glowSphere.setTranslation(-3f, 0.0f, 0f);
 		_glowSphere.setColor(0.0f, 0.0f, 0.4f, 1f);
 		_glowSphere.draw();
 		_glowSphere.setTranslation(3f, 0.0f, 0f);
 		_glowSphere.setColor(0.4f, 0.0f, 0.4f, 1f);
 		_glowSphere.draw();
-		
+		*/
+		_nebula.draw();
 		_pixellationFBO.end();
+		GL14.glBlendEquation(GL14.GL_FUNC_ADD);
 		/*
 		 * HOWTO retrieve an openGL matrix and load it into an uniform
 		 *

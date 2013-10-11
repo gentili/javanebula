@@ -50,6 +50,9 @@ public class GameClient {
 				System.out.println("Caused by:");
 				e.getCause().printStackTrace();
 			}
+			if (e instanceof LWJGLException) {
+				System.out.println(">> OpenGL 3.2 Required <<");
+			}
 			System.exit(1);
 		}
 		log.info("Main Thread Exiting");
@@ -85,7 +88,7 @@ public class GameClient {
 		// Display Init
 		// Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
-		Display.setFullscreen(true);
+		//Display.setFullscreen(true);
 		Display.setTitle("Demurrage GameClient "+VERSION);
 		Display.setVSyncEnabled(true);
 		

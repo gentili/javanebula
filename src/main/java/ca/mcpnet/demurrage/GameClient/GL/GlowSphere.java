@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL20;
 import ca.mcpnet.demurrage.GameClient.ShaderProgramManager;
 import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
+import ca.mcpnet.demurrage.GameClient.jme.Vector4f;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Format;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Usage;
@@ -33,9 +34,16 @@ public class GlowSphere extends Renderable {
 	private float _G;
 	private float _B;
 	private float _A;
+	private Vector4f _color;
+	
+	private float _scale;
 		
 	public GlowSphere(float scale) {
 		super (_shaderProgramManager.glowSphereShaderProgram());
+		
+		_color = new Vector4f();
+		_color.zero();
+		_scale = scale;
 		
 		_vertexAttrIndex_pos = _shaderProgram.getAttribLocation("pos");
 		_uniformIndex_color = _shaderProgram.getUniformLocation("color");
@@ -105,11 +113,34 @@ public class GlowSphere extends Renderable {
 		
 	}
 
+	@Override
+	public void setScale(Vector3f tempVector) {
+		throw new RuntimeException("Scale can only be set during construction!");
+	}
+
+	@Override
+	public void setScale(float x, float y, float z) {
+		throw new RuntimeException("Scale can only be set during construction!");
+	}
+
+	@Override
+	public void setScale(float r) {
+		throw new RuntimeException("Scale can only be set during construction!");
+	}
+	
+	public float getFloatScale() {
+		return _scale;
+	}
+
 	public void setColor(float r, float g, float b, float a) {
 		_R = r;
 		_G = g;
 		_B = b;
 		_A = a;
+		_color.set(r, g, b, a);
+	}
+	public Vector4f getColor() {
+		return _color;
 	}
 	
 	public void draw() {
