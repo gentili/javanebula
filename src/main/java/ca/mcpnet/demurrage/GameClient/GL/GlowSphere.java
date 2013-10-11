@@ -30,12 +30,6 @@ public class GlowSphere extends Renderable {
 	private int _vertexAttrIndex_pos;
 	private int _uniformIndex_color;
 	
-	private float _R;
-	private float _G;
-	private float _B;
-	private float _A;
-	private Vector4f _color;
-	
 	private float _scale;
 		
 	public GlowSphere(float scale) {
@@ -131,24 +125,13 @@ public class GlowSphere extends Renderable {
 	public float getFloatScale() {
 		return _scale;
 	}
-
-	public void setColor(float r, float g, float b, float a) {
-		_R = r;
-		_G = g;
-		_B = b;
-		_A = a;
-		_color.set(r, g, b, a);
-	}
-	public Vector4f getColor() {
-		return _color;
-	}
 	
 	public void draw() {
 		_modelMatrixFloatBuffer.rewind();
         // GL20.glUseProgram(_shaderProgram.getID()); <-- This is implied by the setModelMatrix() call
         _shaderProgram.setModelMatrix(_modelMatrixFloatBuffer);
 		// Set the color uniform
-		GL20.glUniform4f(_uniformIndex_color, _R, _G, _B, _A);
+		GL20.glUniform4f(_uniformIndex_color, _color.x, _color.y, _color.z, _color.w);
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _vbpos.getId());
 

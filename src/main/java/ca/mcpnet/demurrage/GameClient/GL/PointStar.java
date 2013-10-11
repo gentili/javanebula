@@ -18,7 +18,7 @@ import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Format;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Usage;
 
-public class FarStar extends Renderable {
+public class PointStar extends Renderable {
 	
 	static private ShaderProgramManager _shaderProgramManager;
 	
@@ -31,12 +31,8 @@ public class FarStar extends Renderable {
 
 	private int _vertexAttrIndex_pos;
 	private int _uniformIndex_color;
-	private float _R;
-	private float _G;
-	private float _B;
-	private float _A;
 	
-	public FarStar(float scale) {
+	public PointStar(float scale) {
 		super (_shaderProgramManager.concursionPointShaderProgram());
 		
 		_vertexAttrIndex_pos = _shaderProgram.getAttribLocation("pos");
@@ -115,19 +111,12 @@ public class FarStar extends Renderable {
 		return curindex;
 	}
 
-	public void setColor(float r, float g, float b, float a) {
-		_R = r;
-		_G = g;
-		_B = b;
-		_A = a;
-	}
-
 	public void draw() {
 		_modelMatrixFloatBuffer.rewind();
         // GL20.glUseProgram(_shaderProgram.getID()); <-- This is implied by the setModelMatrix() call
         _shaderProgram.setModelMatrix(_modelMatrixFloatBuffer);
 		// Set the color uniform
-		GL20.glUniform4f(_uniformIndex_color, _R, _G, _B, _A);
+		GL20.glUniform4f(_uniformIndex_color, _color.x, _color.y, _color.z, _color.w);
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _vbpos.getId());
 

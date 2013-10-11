@@ -16,7 +16,7 @@ import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
-import ca.mcpnet.demurrage.GameClient.GL.FarStar;
+import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
 import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
@@ -38,8 +38,8 @@ public class MainMenuState extends ClientState {
 	RootPane _mainMenuRootPane;
 	private Axis _axis;
 	private WireSphere _wiresphere;
-	private FarStar _farStar;
-	private FarStar _farStarInner;
+	private PointStar _farStar;
+	private PointStar _farStarInner;
 	private GlowSphere _glowSphere;
 	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
@@ -50,8 +50,8 @@ public class MainMenuState extends ClientState {
 		
 		_axis = new Axis();
 		_wiresphere = new WireSphere();
-		_farStar = new FarStar(0.25f);
-		_farStarInner = new FarStar(0.1f);
+		_farStar = new PointStar(0.25f);
+		_farStarInner = new PointStar(0.1f);
 		_glowSphere = new GlowSphere(1f);
 		_nebula = new Nebula();
 		_pixellationFBO = new PixellationFBO();

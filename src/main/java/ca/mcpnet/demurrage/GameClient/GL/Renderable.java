@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
+import ca.mcpnet.demurrage.GameClient.jme.Vector4f;
 
 public abstract class Renderable {
 	
@@ -17,6 +18,8 @@ public abstract class Renderable {
 	protected Matrix4f _modelMatrix;
 	protected FloatBuffer _modelMatrixFloatBuffer;
 
+	protected Vector4f _color;
+
 	protected Renderable(ShaderProgram sp) {
 		_shaderProgram = sp;
 		
@@ -27,6 +30,8 @@ public abstract class Renderable {
 		
 		_modelMatrix = new Matrix4f();
 		_modelMatrixFloatBuffer = _modelMatrix.toFloatBuffer();
+		
+		_color = Vector4f.UNIT_XYZW.clone();
 	}
 		
 	public void setTranslation(float x, float y, float z) {
@@ -78,5 +83,17 @@ public abstract class Renderable {
 	}
 	
 	public abstract void draw();
+
+	public void setColor(float r, float g, float b, float a) {
+		_color.set(r, g, b, a);
+	}
+	
+	public void setColor(Vector4f newcolor) {
+		_color.set(newcolor);
+	}
+	
+	public Vector4f getColor() {
+		return _color;
+	}
 
 }

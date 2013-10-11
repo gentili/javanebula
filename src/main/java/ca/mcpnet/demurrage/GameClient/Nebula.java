@@ -2,7 +2,7 @@ package ca.mcpnet.demurrage.GameClient;
 
 import java.util.ArrayList;
 
-import ca.mcpnet.demurrage.GameClient.GL.FarStar;
+import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
@@ -15,17 +15,17 @@ public class Nebula {
 	private static final float MAX_COMPONENT = 1f;
 	
 	private WireSphere _wiresphere;
-	private FarStar _farStar;
-	private FarStar _farStarInner;
+	private PointStar _farStar;
+	private PointStar _farStarInner;
 	private ArrayList<GlowSphere> _gsarray;
-	private ArrayList<FarStar> _stararray;
+	private ArrayList<PointStar> _stararray;
 	private boolean _complete;
 	private Vector4f _finalColor;
 
 	public Nebula() {
 		_wiresphere = new WireSphere();
-		_farStar = new FarStar(0.25f);
-		_farStarInner = new FarStar(0.1f);
+		_farStar = new PointStar(0.25f);
+		_farStarInner = new PointStar(0.1f);
 		_gsarray = new ArrayList<GlowSphere>();
 		_complete = false;
 		_finalColor = new Vector4f();

@@ -12,7 +12,6 @@ import ca.mcpnet.demurrage.GameClient.ShaderProgramManager;
 import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
-import ca.mcpnet.demurrage.GameClient.jme.Vector4f;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Format;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Usage;
@@ -33,11 +32,8 @@ public class WireSphere extends Renderable {
 	static private int _vertexAttrIndex_normal;
 	static private int _uniformIndex_color;
 	
-	private Vector4f _color;
-	
 	public WireSphere() {
 		super(_shaderProgramManager.cameraIsLightShaderProgram());
-		_color = Vector4f.UNIT_XYZW.clone();
 		
 		// ONE TIME INIT
 		if (_INIT) {
@@ -116,9 +112,6 @@ public class WireSphere extends Renderable {
 		_vbindex.updateBufferDataOnGPU();
 	}
 
-	public void setColor(float r, float g, float b, float a) {
-		_color.set(r, g, b, a);
-	}
 	public void draw() {
         // Set the modelMatrix uniform
         _modelMatrixFloatBuffer.rewind();
