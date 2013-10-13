@@ -16,6 +16,7 @@ import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
+import ca.mcpnet.demurrage.GameClient.GL.Nebula;
 import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
@@ -124,10 +125,6 @@ public class MainMenuState extends ClientState {
 		*/
         _pixellationFBO.begin();
 		// Draw star
-		glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL11.GL_DITHER);
 		/*
 		_farStar.setTranslation(3f, 0.0f, 0f);
 		_farStar.setColor(0.1f, 0f, 0.1f, 1f);
@@ -142,8 +139,6 @@ public class MainMenuState extends ClientState {
 		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
 		_farStarInner.draw();
 		*/
-		GL14.glBlendEquation(GL14.GL_MAX);
-		glEnable(GL11.GL_DITHER);
 		/*
 		_glowSphere.setTranslation(-3f, 0.0f, 0f);
 		_glowSphere.setColor(0.0f, 0.0f, 0.4f, 1f);

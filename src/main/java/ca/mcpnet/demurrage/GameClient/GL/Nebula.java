@@ -1,10 +1,14 @@
-package ca.mcpnet.demurrage.GameClient;
+package ca.mcpnet.demurrage.GameClient.GL;
+
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.ArrayList;
 
-import ca.mcpnet.demurrage.GameClient.GL.PointStar;
-import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
-import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
 import ca.mcpnet.demurrage.GameClient.jme.Vector4f;
 
@@ -15,18 +19,15 @@ public class Nebula {
 	private static final float MAX_COMPONENT = 1f;
 	
 	private WireSphere _wiresphere;
-	private PointStar _farStar;
-	private PointStar _farStarInner;
 	private ArrayList<GlowSphere> _gsarray;
-	private ArrayList<PointStar> _stararray;
+	private ArrayList<DoublePointStar> _dpsarray;
 	private boolean _complete;
 	private Vector4f _finalColor;
 
 	public Nebula() {
 		_wiresphere = new WireSphere();
-		_farStar = new PointStar(0.25f);
-		_farStarInner = new PointStar(0.1f);
 		_gsarray = new ArrayList<GlowSphere>();
+		_dpsarray = new ArrayList<DoublePointStar>();
 		_complete = false;
 		_finalColor = new Vector4f();
 		
@@ -38,16 +39,38 @@ public class Nebula {
 		gs.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(CONTAINER_RADIUS));
 		setColor(gs);
 		_gsarray.add(gs);
+		
+		DoublePointStar dps = new DoublePointStar(0.15f);
+		dps.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(CONTAINER_RADIUS));
+		setColor(dps);
+		_dpsarray.add(dps);
+		
 		gs = new GlowSphere(MAX_SPHERE);
 		gs.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(-CONTAINER_RADIUS));
 		setColor(gs);
 		_gsarray.add(gs);
 		_finalColor.set(gs.getColor());
+		
+		dps = new DoublePointStar(0.15f);
+		dps.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(-CONTAINER_RADIUS));
+		setColor(dps);
+		_dpsarray.add(dps);
 	}
 	
 	public void draw() {
 		grow();
-		_wiresphere.draw();
+		// _wiresphere.draw();
+		glEnable(GL11.GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+		GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+		glDisable(GL11.GL_DITHER);
+		for (DoublePointStar dps : _dpsarray) {
+			dps.draw();
+		}
+		// GL14.glBlendEquation(GL14.GL_MAX);
+		// glEnable(GL11.GL_DITHER);
 		for (GlowSphere gs : _gsarray) {
 			gs.draw();
 		}
@@ -55,9 +78,16 @@ public class Nebula {
 	
 	private void setColor(GlowSphere gs) {
 		Vector3f v = gs.getTranslation();
+		float red = (CONTAINER_RADIUS + v.y)/(2*CONTAINER_RADIUS);
+		float mag = (float) Math.random() * 0.1f;
+		gs.setColor(red*mag, 0f, mag, 1f);
+	}
+
+	private void setColor(DoublePointStar dps) {
+		Vector3f v = dps.getTranslation();
 		float red = (CONTAINER_RADIUS + v.y)/(2*CONTAINER_RADIUS)*MAX_COMPONENT;
-		float mag = 1f;//(float) Math.random();
-		gs.setColor(red*mag, 0f, MAX_COMPONENT*mag, 1f);
+		float mag = 0.1f;
+		dps.setColor(red*mag, 0f, MAX_COMPONENT*mag, 1f);		
 	}
 
 	private void grow() {
