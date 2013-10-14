@@ -15,27 +15,31 @@ public class PixellationFBO {
 		if (!GLContext.getCapabilities().GL_EXT_framebuffer_blit)
 			throw new RuntimeException("FBO blit not supported");
 				
-		// Setup up colour buffer
-		int RBcolorid = ARBFramebufferObject.glGenRenderbuffers();
-		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, RBcolorid);
-		ARBFramebufferObject.glRenderbufferStorage(ARBFramebufferObject.GL_RENDERBUFFER, 
-				GL11.GL_RGBA4, Display.getWidth()/2, Display.getHeight()/2);
-		Util.checkGLError();
-		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, 0);
+		// Setup up color buffer
+		int TEXcolorid = GL11.glGenTextures();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, TEXcolorid);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, Display.getWidth()/2, Display.getHeight()/2, 
+				0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+		
 		// Setup depth buffer
 		int RBdepthid = ARBFramebufferObject.glGenRenderbuffers();
 		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, RBdepthid);
 		ARBFramebufferObject.glRenderbufferStorage(ARBFramebufferObject.GL_RENDERBUFFER, 
 				GL11.GL_DEPTH_COMPONENT, Display.getWidth()/2, Display.getHeight()/2);
 		ARBFramebufferObject.glBindRenderbuffer(ARBFramebufferObject.GL_RENDERBUFFER, 0);
+
 		// Setup the frame buffer object
 		FBOid = ARBFramebufferObject.glGenFramebuffers();
 		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, FBOid);
-		// Attach frame buffers
-		ARBFramebufferObject.glFramebufferRenderbuffer(ARBFramebufferObject.GL_FRAMEBUFFER,
-				ARBFramebufferObject.GL_COLOR_ATTACHMENT0, ARBFramebufferObject.GL_RENDERBUFFER, RBcolorid);
+		
+		// Attach Color texture
+		ARBFramebufferObject.glFramebufferTexture2D(ARBFramebufferObject.GL_FRAMEBUFFER, 
+				ARBFramebufferObject.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, TEXcolorid, 0);
+		
+		// Attach Depth buffer
 		ARBFramebufferObject.glFramebufferRenderbuffer(ARBFramebufferObject.GL_FRAMEBUFFER,
 				ARBFramebufferObject.GL_DEPTH_ATTACHMENT, ARBFramebufferObject.GL_RENDERBUFFER, RBdepthid);
+		
 		// Verify setup
 		if (ARBFramebufferObject.glCheckFramebufferStatus(ARBFramebufferObject.GL_FRAMEBUFFER) != 
 				ARBFramebufferObject.GL_FRAMEBUFFER_COMPLETE) {
