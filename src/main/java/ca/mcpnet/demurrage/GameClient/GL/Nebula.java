@@ -156,7 +156,6 @@ public class Nebula {
 	}
 
 	private void newCloud() {
-		System.out.println("New Cloud #"+_gsarray.size());
 		// Time to create a new cloud
 		while (true) {
 			// Direction

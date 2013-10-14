@@ -45,7 +45,6 @@ public class PixellationFBO {
 	}
 
 	public void begin() {
-		GL11.glDisable(GL11.GL_DITHER);
 		ARBFramebufferObject.glBindFramebuffer(ARBFramebufferObject.GL_FRAMEBUFFER, FBOid);
     	GL11.glViewport(0, 0, Display.getWidth()/2, Display.getHeight()/2);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
