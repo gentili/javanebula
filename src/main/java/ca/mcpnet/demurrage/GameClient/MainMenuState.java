@@ -1,9 +1,5 @@
 package ca.mcpnet.demurrage.GameClient;
 
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -14,12 +10,10 @@ import org.lwjgl.opengl.GL14;
 
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
-import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
-import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
-import ca.mcpnet.demurrage.GameClient.GL.Nebula;
-import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
+import ca.mcpnet.demurrage.GameClient.GL.Nebula;
 import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
+import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
@@ -101,7 +95,7 @@ public class MainMenuState extends ClientState {
 		float a = (float) (time/2000 % (FastMath.TWO_PI));
 
 		// Set up camera and view matrix
-		_camera.addHorizontalRotationAboutTarget(0.01f);
+		_camera.addHorizontalRotationAboutTarget(0.001f);
 		_camera.update();
 		
 		// Update the View Matrixes

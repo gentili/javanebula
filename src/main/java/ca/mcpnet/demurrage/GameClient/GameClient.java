@@ -1,7 +1,6 @@
 package ca.mcpnet.demurrage.GameClient;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -88,7 +87,7 @@ public class GameClient {
 		// Display Init
 		// Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
-		//Display.setFullscreen(true);
+		Display.setFullscreen(true);
 		Display.setTitle("Demurrage GameClient "+VERSION);
 		Display.setVSyncEnabled(true);
 		
