@@ -1,40 +1,34 @@
 package ca.mcpnet.demurrage.GameClient.GL;
 
 import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_ACTIVE_ATTRIBUTES;
+import static org.lwjgl.opengl.GL20.GL_ACTIVE_UNIFORMS;
+import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.glGetAttribLocation;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL20;
 
 import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
 
 public class ShaderProgram {
-	Logger _log = Logger.getLogger("ShaderProgram");
+	Logger _log = Logger.getLogger("ShaderProgram3D");
 
-	private int _id;
-	ArrayList<Shader> _shaders;
-	
-	private int _uniformIndex_modelMatrix;
-	private int _uniformIndex_viewMatrix;
-	private int _uniformIndex_projectionMatrix;
-
-	public ShaderProgram() {
-		_id = GL20.glCreateProgram();
-        if (_id <= 0) {
-            throw new RuntimeException("Invalid ID (" + _id + ") received when trying to create shader program.");
-        }
-        _shaders = new ArrayList<Shader>();
-	}
+	protected int _id;
+	protected ArrayList<Shader> _shaders;
 
 	public void addShader(Shader shader) {
 		_shaders.add(shader);
 	}
-	
+
 	public void attachAndLink() {
 		_log.debug("Attaching and Linking ShaderProgram "+_id);
 		Iterator<Shader> itr = _shaders.iterator();
@@ -43,38 +37,34 @@ public class ShaderProgram {
 			GL20.glAttachShader(_id, shader.getID());		
 		}
 		GL20.glLinkProgram(_id);
-        boolean linkOK = glGetProgrami(_id, GL_LINK_STATUS) == GL_TRUE;
-
-        int length = glGetProgrami(_id, GL_INFO_LOG_LENGTH);
-        if (length > 3) {
-            // get infos
-            ByteBuffer logBuf = BufferUtils.createByteBuffer(length);
-            glGetProgramInfoLog(_id, null, logBuf);
-
-            // convert to string, etc
-            byte[] logBytes = new byte[length];
-            logBuf.get(logBytes, 0, length);
-            _log.debug(new String(logBytes));
-        }
-        if (!linkOK) {
-        	throw new RuntimeException("Linking failed in ShaderProgram "+_id);
-        }
-        
-        int attr_count = glGetProgrami(_id, GL_ACTIVE_ATTRIBUTES);
-        _log.debug("Active Attributes: "+attr_count);
-        for (int i = 0; i < attr_count; i++) {
-        	_log.debug("  " + GL20.glGetActiveAttrib(_id, i, 20));
-        }
-        
-        int uni_count = glGetProgrami(_id, GL_ACTIVE_UNIFORMS);
-        _log.debug("Active Uniforms: "+uni_count);
-        for (int i = 0; i < uni_count; i++) {
-        	_log.debug("  " + GL20.glGetActiveUniform(_id, i, 20));
-        }
-        
-        _uniformIndex_modelMatrix = getUniformLocation("modelMatrix");
-        _uniformIndex_viewMatrix = getUniformLocation("viewMatrix");
-        _uniformIndex_projectionMatrix = getUniformLocation("projectionMatrix");
+	    boolean linkOK = glGetProgrami(_id, GL_LINK_STATUS) == GL_TRUE;
+	
+	    int length = glGetProgrami(_id, GL_INFO_LOG_LENGTH);
+	    if (length > 3) {
+	        // get infos
+	        ByteBuffer logBuf = BufferUtils.createByteBuffer(length);
+	        glGetProgramInfoLog(_id, null, logBuf);
+	
+	        // convert to string, etc
+	        byte[] logBytes = new byte[length];
+	        logBuf.get(logBytes, 0, length);
+	        _log.debug(new String(logBytes));
+	    }
+	    if (!linkOK) {
+	    	throw new RuntimeException("Linking failed in ShaderProgram "+_id);
+	    }
+	    
+	    int attr_count = glGetProgrami(_id, GL_ACTIVE_ATTRIBUTES);
+	    _log.debug("Active Attributes: "+attr_count);
+	    for (int i = 0; i < attr_count; i++) {
+	    	_log.debug("  " + GL20.glGetActiveAttrib(_id, i, 20));
+	    }
+	    
+	    int uni_count = glGetProgrami(_id, GL_ACTIVE_UNIFORMS);
+	    _log.debug("Active Uniforms: "+uni_count);
+	    for (int i = 0; i < uni_count; i++) {
+	    	_log.debug("  " + GL20.glGetActiveUniform(_id, i, 20));
+	    }	    
 	}
 
 	public int getAttribLocation(String name) {
@@ -98,23 +88,9 @@ public class ShaderProgram {
 		}
 		return loc;
 	}
-	
+
 	public int getID() {
 		return _id;
 	}
 
-	public void setViewMatrix(FloatBuffer viewMatrixFloatBuffer) {
-        GL20.glUseProgram(getID());
-        GL20.glUniformMatrix4(_uniformIndex_viewMatrix,true,viewMatrixFloatBuffer);
-	}
-
-	public void setModelMatrix(FloatBuffer modelMatrixFloatBuffer) {
-        GL20.glUseProgram(getID());
-        GL20.glUniformMatrix4(_uniformIndex_modelMatrix,true,modelMatrixFloatBuffer);
-	}
-
-	public void setProjectionMatrix(FloatBuffer projectionMatrixFloatBuffer) {
-        GL20.glUseProgram(getID());
-        GL20.glUniformMatrix4(_uniformIndex_projectionMatrix,true,projectionMatrixFloatBuffer);
-	}
 }

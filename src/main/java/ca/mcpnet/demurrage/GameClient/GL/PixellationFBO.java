@@ -4,9 +4,9 @@ import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.Util;
 
 public class PixellationFBO {
+	// static private ShaderProgramManager _shaderProgramManager;
 	private int FBOid;
 
 	public PixellationFBO() {

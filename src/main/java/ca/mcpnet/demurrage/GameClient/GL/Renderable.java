@@ -8,7 +8,7 @@ import ca.mcpnet.demurrage.GameClient.jme.Vector4f;
 
 public abstract class Renderable {
 	
-	protected ShaderProgram _shaderProgram;
+	protected ShaderProgram3D _shaderProgram;
 	
 	protected Vector3f _position;
 	protected Vector3f _rotationAxis;
@@ -20,7 +20,7 @@ public abstract class Renderable {
 
 	protected Vector4f _color;
 
-	protected Renderable(ShaderProgram sp) {
+	protected Renderable(ShaderProgram3D sp) {
 		_shaderProgram = sp;
 		
 		_position = Vector3f.ZERO.clone();
