@@ -178,7 +178,7 @@ public class ConcursionState extends ClientState {
 		// START RENDER FOR MAIN WINDOW
 		
 		// Set up matrices for main window
-		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(_projection.getProjectionMatrixFloatBuffer(),_camera.getViewMatrixFloatBuffer());
+		_gameClient.getShaderProgramManager().setShaderProgram3DMatrixes(_projection.getProjectionMatrixFloatBuffer(),_camera.getViewMatrixFloatBuffer());
 
 		// Render Solids first
     	glEnable(GL_DEPTH_TEST);
@@ -280,7 +280,7 @@ public class ConcursionState extends ClientState {
 		_subCamera.update();
 
 		// Set up matrices for sub window
-		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(_subProjection.getProjectionMatrixFloatBuffer(), _subCamera.getViewMatrixFloatBuffer());
+		_gameClient.getShaderProgramManager().setShaderProgram3DMatrixes(_subProjection.getProjectionMatrixFloatBuffer(), _subCamera.getViewMatrixFloatBuffer());
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
     	GL11.glViewport(_subWindowRect.getX(), _subWindowRect.getY(), _subWindowRect.getWidth(), _subWindowRect.getHeight());

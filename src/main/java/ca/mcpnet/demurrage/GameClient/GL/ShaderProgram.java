@@ -25,6 +25,15 @@ public class ShaderProgram {
 	protected int _id;
 	protected ArrayList<Shader> _shaders;
 
+	public ShaderProgram() {
+		_id = GL20.glCreateProgram();
+        if (_id <= 0) {
+            throw new RuntimeException("Invalid ID (" + _id + ") received when trying to create shader program.");
+        }
+        _shaders = new ArrayList<Shader>();
+	}
+
+
 	public void addShader(Shader shader) {
 		_shaders.add(shader);
 	}

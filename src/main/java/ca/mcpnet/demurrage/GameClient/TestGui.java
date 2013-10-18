@@ -198,7 +198,7 @@ public class TestGui {
 		// Set up the projection matrix
 		float aspect = (float) Display.getWidth() / (float) Display.getHeight();
 		_projection.fromPerspective(60.0f, aspect, 0.1f, 10.0f);
-		_shaderProgramManager.setShaderProgramMatrixes(_projection.getProjectionMatrixFloatBuffer(), null);
+		_shaderProgramManager.setShaderProgram3DMatrixes(_projection.getProjectionMatrixFloatBuffer(), null);
 		
 		_camera.setRadius(2.0f);
 		_camera.setUpVector(Vector3f.UNIT_Y);
@@ -262,7 +262,7 @@ public class TestGui {
     		}
     		_camera.lookAtTarget();
 
-    		_shaderProgramManager.setShaderProgramMatrixes(null, _camera.getViewMatrixFloatBuffer());
+    		_shaderProgramManager.setShaderProgram3DMatrixes(null, _camera.getViewMatrixFloatBuffer());
 
     		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
         	GL11.glScissor(0, 0, Display.getWidth(), Display.getHeight());

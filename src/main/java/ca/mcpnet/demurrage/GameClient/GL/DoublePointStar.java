@@ -15,7 +15,7 @@ public class DoublePointStar {
 	
 	public void setColor(Vector4f color) {
 		_outterPointStar.setColor(color);
-		_innerPointStar.setColor(color.add(0.1f, 0.1f, 0.1f, 0f).normalizeLocal().mult(color.length()));
+		_innerPointStar.setColor(color.add(0.1f, 0.1f, 0.1f, 0f));
 	}
 	public void setColor(float f, float g, float h, float i) {
 		setColor(new Vector4f(f,g,h,i));

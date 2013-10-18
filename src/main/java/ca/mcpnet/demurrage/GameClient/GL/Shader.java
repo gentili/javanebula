@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 
 import org.apache.commons.io.IOUtils;
@@ -44,6 +43,7 @@ public class Shader {
 		GL20.glCompileShader(_id);
 		boolean compileOK = GL20.glGetShaderi(_id, GL20.GL_COMPILE_STATUS) == GL11.GL_TRUE;
 
+		String errString = null;
 		int length = GL20.glGetShaderi(_id, GL20.GL_INFO_LOG_LENGTH);
         if (length > 3) {
             // get infos
@@ -52,10 +52,10 @@ public class Shader {
             byte[] logBytes = new byte[length];
             logBuf.get(logBytes, 0, length);
             // convert to string, etc
-            System.out.println(new String(logBytes));
+            errString = new String(logBytes).trim();
         }
         if (!compileOK) {
-        	throw new RuntimeException("Shader Compile Error in '"+resource+"'");
+        	throw new RuntimeException("Shader Compile Error in '"+resource+"'\n"+errString);
         }
 	}
 

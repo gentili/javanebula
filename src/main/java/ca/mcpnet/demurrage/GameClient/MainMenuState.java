@@ -72,7 +72,7 @@ public class MainMenuState extends ClientState {
 		Matrix4f projectionMatrix = new Matrix4f();
 		float aspect = (float) Display.getWidth()/ (float) Display.getHeight();
 		projectionMatrix.fromPerspective(60.0f, aspect, 1.0f, 8.0f);
-		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(projectionMatrix.toFloatBuffer(), null);
+		_gameClient.getShaderProgramManager().setShaderProgram3DMatrixes(projectionMatrix.toFloatBuffer(), null);
 
 		_gameClient.getGUI().setRootPane(_rootPane);
 		_mainMenuRootPane.setLoginFocus();
@@ -99,7 +99,7 @@ public class MainMenuState extends ClientState {
 		_camera.update();
 		
 		// Update the View Matrixes
-		_gameClient.getShaderProgramManager().setShaderProgramMatrixes(null, _camera.getViewMatrixFloatBuffer());
+		_gameClient.getShaderProgramManager().setShaderProgram3DMatrixes(null, _camera.getViewMatrixFloatBuffer());
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 

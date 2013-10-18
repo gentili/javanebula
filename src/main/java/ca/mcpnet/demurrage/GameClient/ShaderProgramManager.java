@@ -10,54 +10,65 @@ import org.lwjgl.opengl.GL20;
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
 import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
+import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
 import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.Shader;
+import ca.mcpnet.demurrage.GameClient.GL.ShaderProgram2D;
 import ca.mcpnet.demurrage.GameClient.GL.ShaderProgram3D;
 import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 
 public class ShaderProgramManager {
-	private Vector<ShaderProgram3D> _shaderProgramList;
+	private Vector<ShaderProgram3D> _shaderProgram3DList;
+	private Vector<ShaderProgram2D> _shaderProgram2DList;
 
 	private ShaderProgram3D _simpleIndexedColorShaderProgram;
 	private ShaderProgram3D _cameraIsLightShaderProgram;
 	private ShaderProgram3D _concursionPointShaderProgram;
 	private ShaderProgram3D _concursionEdgeShaderProgram;
 	private ShaderProgram3D _glowSphereShaderProgram;
+	private ShaderProgram2D _passThroughShaderProgram;
 	
 
 	public ShaderProgramManager() throws IOException {
-		_shaderProgramList = new Vector<ShaderProgram3D>();
+		_shaderProgram3DList = new Vector<ShaderProgram3D>();
+		_shaderProgram2DList = new Vector<ShaderProgram2D>();
 
 		_simpleIndexedColorShaderProgram = new ShaderProgram3D();
 		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/simpleIndexedColor.vrt"));
 		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/simpleIndexedColor.frg"));
 		_simpleIndexedColorShaderProgram.attachAndLink();
-		_shaderProgramList.add(_simpleIndexedColorShaderProgram);
+		_shaderProgram3DList.add(_simpleIndexedColorShaderProgram);
 
 		_cameraIsLightShaderProgram = new ShaderProgram3D();
         _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/cameraIsLight.vrt"));
         _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/cameraIsLight.frg"));
         _cameraIsLightShaderProgram.attachAndLink();
-        _shaderProgramList.add(_cameraIsLightShaderProgram);
+        _shaderProgram3DList.add(_cameraIsLightShaderProgram);
         
         _concursionPointShaderProgram = new ShaderProgram3D();
         _concursionPointShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionPoint.vrt"));
         _concursionPointShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionPoint.frg"));
         _concursionPointShaderProgram.attachAndLink();
-        _shaderProgramList.add(_concursionPointShaderProgram);
+        _shaderProgram3DList.add(_concursionPointShaderProgram);
 
         _concursionEdgeShaderProgram = new ShaderProgram3D();
         _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionEdge.vrt"));
         _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionEdge.frg"));
         _concursionEdgeShaderProgram.attachAndLink();
-        _shaderProgramList.add(_concursionEdgeShaderProgram);
+        _shaderProgram3DList.add(_concursionEdgeShaderProgram);
         
         _glowSphereShaderProgram = new ShaderProgram3D();
         _glowSphereShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/glowSphere.vrt"));
         _glowSphereShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/glowSphere.frg"));
         _glowSphereShaderProgram.attachAndLink();
-        _shaderProgramList.add(_glowSphereShaderProgram);
+        _shaderProgram3DList.add(_glowSphereShaderProgram);
+        
+        _passThroughShaderProgram = new ShaderProgram2D();
+        _passThroughShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/passThrough.vrt"));
+        _passThroughShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/passThrough.frg"));
+        _passThroughShaderProgram.attachAndLink();
+        _shaderProgram2DList.add(_passThroughShaderProgram);
         
         Axis.setShaderProgramManager(this);
         ConcursionEdge.setShaderProgramManager(this);
@@ -65,6 +76,7 @@ public class ShaderProgramManager {
         GlowSphere.setShaderProgramManager(this);
         WireSphere.setShaderProgramManager(this);
         PointStar.setShaderProgramManager(this);
+        PixellationFBO.setShaderProgramManager(this);
 	}
 	
 	public ShaderProgram3D simpleIndexedColorShaderProgram() {
@@ -87,10 +99,10 @@ public class ShaderProgramManager {
 		return _glowSphereShaderProgram;
 	}
 
-	public void setShaderProgramMatrixes(
+	public void setShaderProgram3DMatrixes(
 			FloatBuffer projectionMatrixFloatBuffer,
 			FloatBuffer viewMatrixFloatBuffer) {
-		Iterator<ShaderProgram3D> spitr = _shaderProgramList.iterator();
+		Iterator<ShaderProgram3D> spitr = _shaderProgram3DList.iterator();
 		while (spitr.hasNext()) {
 			ShaderProgram3D sp = spitr.next();
 			if (projectionMatrixFloatBuffer != null) 
@@ -99,6 +111,10 @@ public class ShaderProgramManager {
 				sp.setViewMatrix(viewMatrixFloatBuffer);
 		}
 
+	}
+
+	public ShaderProgram2D passThroughShaderProgram() {
+		return _passThroughShaderProgram;
 	}
 
 }

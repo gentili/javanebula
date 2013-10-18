@@ -404,7 +404,7 @@ public class VertexBuffer extends GLObject implements Cloneable {
         if (usage == null || format == null || data == null)
             throw new IllegalArgumentException("None of the arguments can be null");
             
-        if (components < 1 || components > 4)
+        if (components < 1 || components > 10)
             throw new IllegalArgumentException("components must be between 1 and 4");
 
         this.data = data;
