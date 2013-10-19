@@ -113,16 +113,16 @@ public class Nebula {
 		if (_dpsarray.size() < 31) {
 			DoublePointStar dps = _dpsarray.get(_dpsarray.size()-1);
 			Vector4f curColor = dps.getColor();
-			curColor.interpolate(_finalStarColor, 0.005f);
+			curColor.interpolate(_finalStarColor, 0.01f);
 			dps.setColor(curColor.x, curColor.y, curColor.z, curColor.w);
 			if (curColor.distance(_finalStarColor) < 0.01)
 				newStar();
 		}
 		
-		if (_gsarray.size() < 200) {
+		if (_gsarray.size() < 400) {
 			GlowSphere gs = _gsarray.get(_gsarray.size()-1);
 			Vector4f curColor = gs.getColor();
-			curColor.interpolate(_finalGlowColor, 0.05f);
+			curColor.interpolate(_finalGlowColor, 0.1f);
 			gs.setColor(curColor.x, curColor.y, curColor.z, curColor.w);
 			if (curColor.distance(_finalGlowColor) < 0.01)
 				newCloud();
@@ -136,7 +136,7 @@ public class Nebula {
 		// Magnitude
 		float mag = (float) ((Math.random()-0.5) + CONTAINER_RADIUS);
 		dir.multLocal(mag);
-		float size = (float) (Math.random()*0.1f+0.01f);
+		float size = (float) (Math.random()*0.07f+0.01f);
 		DoublePointStar dps = new DoublePointStar(size);
 		dps.setTranslation(dir);
 		setColor(dps);

@@ -20,6 +20,7 @@ import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Format;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Usage;
 
 public class PixellationFBO {
+	static private final int FACTOR = 4;
 	static private ShaderProgramManager _shaderProgramManager;
 
 	public static void setShaderProgramManager(
@@ -40,7 +41,7 @@ public class PixellationFBO {
 		// Setup up texture buffer
 		_texBufId = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, _texBufId);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, Display.getWidth()/2, Display.getHeight()/2, 
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, Display.getWidth()/FACTOR, Display.getHeight()/FACTOR, 
 				0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -49,7 +50,7 @@ public class PixellationFBO {
 		int RBdepthid = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, RBdepthid);
 		GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, 
-				GL11.GL_DEPTH_COMPONENT, Display.getWidth()/2, Display.getHeight()/2);
+				GL11.GL_DEPTH_COMPONENT, Display.getWidth()/FACTOR, Display.getHeight()/FACTOR);
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
 
 		// Setup the frame buffer object
@@ -141,7 +142,7 @@ public class PixellationFBO {
 
 	public void begin() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, FBOid);
-    	GL11.glViewport(0, 0, Display.getWidth()/2, Display.getHeight()/2);
+    	GL11.glViewport(0, 0, Display.getWidth()/FACTOR, Display.getHeight()/FACTOR);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 	}
 	
@@ -149,7 +150,7 @@ public class PixellationFBO {
 		/*
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, FBOid);
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
-		GL30.glBlitFramebuffer(0, 0, Display.getWidth()/2, Display.getHeight()/2, 
+		GL30.glBlitFramebuffer(0, 0, Display.getWidth()/FACTOR, Display.getHeight()/FACTOR, 
 				0, 0, Display.getWidth(), Display.getHeight(), 
 				GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
 		*/
