@@ -8,13 +8,13 @@ import java.util.Vector;
 import org.apache.commons.lang.ArrayUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import ca.mcpnet.demurrage.GameClient.ShaderProgramManager;
 import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
-import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Format;
 import ca.mcpnet.demurrage.GameClient.jme.VertexBuffer.Usage;
@@ -29,6 +29,7 @@ public class PixellationFBO {
 
 	private int FBOid;
 	private ShaderProgram2D _shaderProgram;
+	private int _texBufId;
 	private VertexBuffer _vbpos;
 	private VertexBuffer _vbindex;
 	private int _vertexAttrIndex_pos;
@@ -36,11 +37,13 @@ public class PixellationFBO {
 
 	public PixellationFBO() {
 		// Set up FrameBuffer and attached buffers
-		// Setup up color buffer
-		int TEXcolorid = GL11.glGenTextures();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, TEXcolorid);
+		// Setup up texture buffer
+		_texBufId = GL11.glGenTextures();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, _texBufId);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, Display.getWidth()/2, Display.getHeight()/2, 
 				0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		
 		// Setup depth buffer
 		int RBdepthid = GL30.glGenRenderbuffers();
@@ -55,7 +58,7 @@ public class PixellationFBO {
 		
 		// Attach Color texture
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, 
-				GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, TEXcolorid, 0);
+				GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, _texBufId, 0);
 		
 		// Attach Depth buffer
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER,
@@ -79,28 +82,34 @@ public class PixellationFBO {
 		Integer curindex = 0;
 
 		// First half
-		vertex.setXYZ(-0.5f, 1f, 0f);
+		vertex.setXYZ(-1f, 1f, 0f);
+		vertex.setST(0f, 1f);
 		vertexArray.add(vertex.getElements());
 		indexArray.add(curindex++);
 		
 		vertex.setXYZ(1f, 1f, 0f);
+		vertex.setST(1f, 1f);
 		vertexArray.add(vertex.getElements());
 		indexArray.add(curindex++);
 		
 		vertex.setXYZ(1f, -1f, 0f);
+		vertex.setST(1f, 0f);
 		vertexArray.add(vertex.getElements());
 		indexArray.add(curindex++);
 	
 		// Second half
 		vertex.setXYZ(-1f, 1f, 0f);
+		vertex.setST(0f, 1f);
 		vertexArray.add(vertex.getElements());
 		indexArray.add(curindex++);
 		
 		vertex.setXYZ(-1f, -1f, 0f);
+		vertex.setST(0f, 0f);
 		vertexArray.add(vertex.getElements());
 		indexArray.add(curindex++);
 		
 		vertex.setXYZ(1f, -1f, 0f);
+		vertex.setST(1f, 0f);
 		vertexArray.add(vertex.getElements());
 		indexArray.add(curindex++);
 
@@ -137,11 +146,13 @@ public class PixellationFBO {
 	}
 	
 	public void end() {
+		/*
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, FBOid);
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
 		GL30.glBlitFramebuffer(0, 0, Display.getWidth()/2, Display.getHeight()/2, 
 				0, 0, Display.getWidth(), Display.getHeight(), 
 				GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+		*/
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     	GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
     	
@@ -149,6 +160,11 @@ public class PixellationFBO {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDisable(GL11.GL_BLEND);
     	GL20.glUseProgram(_shaderProgram.getID());
+    	
+    	GL13.glActiveTexture(GL13.GL_TEXTURE0);
+    	GL11.glBindTexture(GL11.GL_TEXTURE_2D, _texBufId);
+    	
+    	// Bind the array buffer
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _vbpos.getId());
 
 		// Set up the position array
@@ -156,6 +172,7 @@ public class PixellationFBO {
 		GL20.glVertexAttribPointer(_vertexAttrIndex_pos, TexturedVertex.positionElementCount, GL_FLOAT, 
 				false, TexturedVertex.stride, TexturedVertex.positionByteOffset);
 
+		// Set up the texture array
 		GL20.glEnableVertexAttribArray(_vertexAttrIndex_tex);
 		GL20.glVertexAttribPointer(_vertexAttrIndex_tex, TexturedVertex.textureElementCount, GL_FLOAT, 
 				false, TexturedVertex.stride, TexturedVertex.textureByteOffset);
@@ -169,6 +186,7 @@ public class PixellationFBO {
 
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0); // Clear binding
 		GL20.glDisableVertexAttribArray(_vertexAttrIndex_pos);
+		GL20.glDisableVertexAttribArray(_vertexAttrIndex_tex);
         GL20.glUseProgram(0);		
 
 	}
