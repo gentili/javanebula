@@ -74,6 +74,7 @@
                     <configuration>
                         <finalName>releasescripts</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
+                        <attach>false</attach>
                         <descriptors>
                             <descriptor>src/assemble/releasescripts.xml</descriptor>
                         </descriptors>
