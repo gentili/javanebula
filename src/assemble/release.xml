@@ -57,17 +57,7 @@
             <scope>runtime</scope>
             <excludes>
                 <exclude>*:natives-*</exclude>
-                <exclude>*:GameLauncher*</exclude>
             </excludes>
-        </dependencySet>
-        <dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory></outputDirectory>
-            <scope>runtime</scope>
-            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-            <includes>
-                <include>*:GameLauncher*</include>
-            </includes>
         </dependencySet>
     </dependencySets>
 </assembly>
