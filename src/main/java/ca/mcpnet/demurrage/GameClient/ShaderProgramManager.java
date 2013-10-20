@@ -28,6 +28,7 @@ public class ShaderProgramManager {
 	private ShaderProgram3D _concursionEdgeShaderProgram;
 	private ShaderProgram3D _glowSphereShaderProgram;
 	private ShaderProgram2D _passThroughShaderProgram;
+	private ShaderProgram2D _scanLineShaderProgram;
 	
 
 	public ShaderProgramManager() throws IOException {
@@ -69,6 +70,12 @@ public class ShaderProgramManager {
         _passThroughShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/passThrough.frg"));
         _passThroughShaderProgram.attachAndLink();
         _shaderProgram2DList.add(_passThroughShaderProgram);
+        
+        _scanLineShaderProgram = new ShaderProgram2D();
+        _scanLineShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/scanLine.vrt"));
+        _scanLineShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/scanLine.frg"));
+        _scanLineShaderProgram.attachAndLink();
+        _shaderProgram2DList.add(_scanLineShaderProgram);
         
         Axis.setShaderProgramManager(this);
         ConcursionEdge.setShaderProgramManager(this);
@@ -115,6 +122,10 @@ public class ShaderProgramManager {
 
 	public ShaderProgram2D passThroughShaderProgram() {
 		return _passThroughShaderProgram;
+	}
+	
+	public ShaderProgram2D scanLineShaderProgram() {
+		return _scanLineShaderProgram;
 	}
 
 }

@@ -293,7 +293,6 @@ public class TestGui {
     		_glowSphere.setTranslation(Vector3f.UNIT_Y);
     		_glowSphere.draw();
     		_glowSphere.setTranslation(Vector3f.UNIT_Z);
-    		_glowSphere.setScale(scale,scale,scale);
     		_glowSphere.setColor(1.0f, 0f, 0f, 1.0f);
     		_glowSphere.draw();
     		glEnable(GL_DEPTH_TEST);

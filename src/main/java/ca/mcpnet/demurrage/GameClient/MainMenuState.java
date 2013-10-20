@@ -10,11 +10,8 @@ import org.lwjgl.opengl.GL14;
 
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
-import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.Nebula;
 import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
-import ca.mcpnet.demurrage.GameClient.GL.PointStar;
-import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
@@ -32,10 +29,6 @@ public class MainMenuState extends ClientState {
 	private Camera _camera;
 	RootPane _mainMenuRootPane;
 	private Axis _axis;
-	private WireSphere _wiresphere;
-	private PointStar _farStar;
-	private PointStar _farStarInner;
-	private GlowSphere _glowSphere;
 	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
 	
@@ -44,12 +37,8 @@ public class MainMenuState extends ClientState {
 		_rootPane = _mainMenuRootPane = new RootPane(gc);
 		
 		_axis = new Axis();
-		_wiresphere = new WireSphere();
-		_farStar = new PointStar(0.25f);
-		_farStarInner = new PointStar(0.1f);
-		_glowSphere = new GlowSphere(1f);
 		_nebula = new Nebula();
-		_pixellationFBO = new PixellationFBO();
+		_pixellationFBO = new PixellationFBO(4);
 		
 		_camera = new Camera();
 		_camera.setUpVector(Vector3f.UNIT_Y);
@@ -111,39 +100,13 @@ public class MainMenuState extends ClientState {
 		_axis.setRotation(0, 0, 1f, 0);
 		_axis.setTranslation(0f,0f,0f);
 		_axis.draw();
-
-		// Draw the spheres
-		_wiresphere.setRotation(FastMath.sin(a), 0, 1, 0);
-		_wiresphere.setTranslation(0f, 0f, 0f);
-		_wiresphere.draw();
 		*/
+        
         _pixellationFBO.begin();
-		// Draw star
-		/*
-		_farStar.setTranslation(3f, 0.0f, 0f);
-		_farStar.setColor(0.1f, 0f, 0.1f, 1f);
-		_farStar.draw();
-		_farStarInner.setTranslation(3f, 0.0f, 0f);
-		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
-		_farStarInner.draw();
-		_farStar.setTranslation(-3f, 0.0f, 0f);
-		_farStar.setColor(0f, 0f, 0.1f, 1f);
-		_farStar.draw();
-		_farStarInner.setTranslation(-3f, 0.0f, 0f);
-		_farStarInner.setColor(0.1f, 0.1f, 0.1f, 1f);
-		_farStarInner.draw();
-		*/
-		/*
-		_glowSphere.setTranslation(-3f, 0.0f, 0f);
-		_glowSphere.setColor(0.0f, 0.0f, 0.4f, 1f);
-		_glowSphere.draw();
-		_glowSphere.setTranslation(3f, 0.0f, 0f);
-		_glowSphere.setColor(0.4f, 0.0f, 0.4f, 1f);
-		_glowSphere.draw();
-		*/
 		_nebula.draw();
 		_pixellationFBO.end();
 		GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+
 		/*
 		 * HOWTO retrieve an openGL matrix and load it into an uniform
 		 *

@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
@@ -13,6 +14,8 @@ import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
 import ca.mcpnet.demurrage.GameClient.jme.Vector4f;
 
 public class Nebula {
+	private static final Logger _log = Logger.getLogger("Nebula");
+
 	private static final float MAX_SPHERE = 1f;
 	private static final float CONTAINER_RADIUS = 2f;
 	
@@ -40,7 +43,7 @@ public class Nebula {
 		gs.getColor().multLocal(0.2f);
 		_gsarray.add(gs);
 		
-		DoublePointStar dps = new DoublePointStar(0.15f);
+		DoublePointStar dps = new DoublePointStar(0.2f);
 		dps.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(CONTAINER_RADIUS));
 		setColor(dps);
 		_dpsarray.add(dps);
@@ -54,7 +57,7 @@ public class Nebula {
 		_finalGlowColor.set(gs.getColor());
 		gs.setColor(Vector4f.ZERO);
 		
-		dps = new DoublePointStar(0.15f);
+		dps = new DoublePointStar(0.2f);
 		dps.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(-CONTAINER_RADIUS));
 		setColor(dps);
 		_dpsarray.add(dps);
@@ -109,7 +112,6 @@ public class Nebula {
 	}
 
 	private void grow() {
-		
 		if (_dpsarray.size() < 31) {
 			DoublePointStar dps = _dpsarray.get(_dpsarray.size()-1);
 			Vector4f curColor = dps.getColor();
@@ -117,6 +119,8 @@ public class Nebula {
 			dps.setColor(curColor.x, curColor.y, curColor.z, curColor.w);
 			if (curColor.distance(_finalStarColor) < 0.01)
 				newStar();
+			if (_dpsarray.size() == 31)
+				_log.debug("Final DoublePointStar generated");
 		}
 		
 		if (_gsarray.size() < 400) {
@@ -126,6 +130,9 @@ public class Nebula {
 			gs.setColor(curColor.x, curColor.y, curColor.z, curColor.w);
 			if (curColor.distance(_finalGlowColor) < 0.01)
 				newCloud();
+			if (_gsarray.size() == 400) {
+				_log.debug("Final GlowSphere generated");
+			}
 		}
 	}
 
