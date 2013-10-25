@@ -61,10 +61,11 @@ public class TestNebula {
 	private int[] _framearray;
 	private boolean _gifwrite;
 	private AnimatedGifEncoder _gifEncoder;
+	private int _curframe;
 
 	public TestNebula() throws LWJGLException, IOException {
 		// Display Init
-		Display.setDisplayMode(new DisplayMode(300,300));
+		Display.setDisplayMode(new DisplayMode(640,200));
 		Display.setTitle("Nebula Test");
 		Display.setVSyncEnabled(true);
 		
@@ -115,17 +116,23 @@ public class TestNebula {
     		boolean leftButtonDown = Mouse.isButtonDown(0);
     		boolean rightButtonDown = Mouse.isButtonDown(1);
     		boolean middleButtonDown = Mouse.isButtonDown(2);
+    		
+    		_curframe++;
     		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
     			if (!_gifwrite) {
+    				_curframe = 0;
     				_gifwrite = true;
     				_log.debug("Starting gif write");
     				
     				_gifEncoder = new AnimatedGifEncoder();
-    				_gifEncoder.setDelay(100);
+    				_gifEncoder.setDelay(50);
+    				_gifEncoder.setRepeat(0);
+    				_gifEncoder.setDispose(0);
+    				_gifEncoder.setQuality(1);
     				_gifEncoder.start("testgif.gif");
     			}
     		}
-    		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+    		if (_curframe >= 100) {
     			if (_gifwrite) {
     				_gifwrite = false;
     				_log.debug("Stopping gif write");
@@ -140,6 +147,9 @@ public class TestNebula {
     		if (dr != 0) {
         		_camera.addRadius(dr/10000f);
     			_log.info("camera radius set to "+_camera.getRadius());
+    		}
+    		if (_gifwrite) {
+    			_camera.addHorizontalRotationAboutTarget((float) (2*Math.PI/100));
     		}
     		_camera.lookAtTarget();
 
