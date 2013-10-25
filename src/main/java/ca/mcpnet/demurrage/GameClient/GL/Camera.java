@@ -227,4 +227,8 @@ public class Camera {
 		lookAtTarget();
 	}
 
+	public float getRadius() {
+		return _radius;
+	}
+
 }

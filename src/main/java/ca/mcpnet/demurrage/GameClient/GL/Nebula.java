@@ -19,6 +19,9 @@ public class Nebula {
 	private static final float MAX_SPHERE = 1f;
 	private static final float CONTAINER_RADIUS = 2f;
 	
+	private float _star_interpolation = 0.01f;
+	private float _glow_interpolation = 0.1f;
+	
 	private WireSphere _wiresphere;
 	private ArrayList<GlowSphere> _gsarray;
 	private ArrayList<DoublePointStar> _dpsarray;
@@ -97,6 +100,11 @@ public class Nebula {
 		*/
 	}
 	
+	public void setInterpolations(float star, float glow) {
+		_star_interpolation = star;
+		_glow_interpolation = glow;
+	}
+	
 	private void setColor(GlowSphere gs) {
 		Vector3f v = gs.getTranslation();
 		float red = (CONTAINER_RADIUS + v.y)/(2*CONTAINER_RADIUS);
@@ -115,7 +123,7 @@ public class Nebula {
 		if (_dpsarray.size() < 31) {
 			DoublePointStar dps = _dpsarray.get(_dpsarray.size()-1);
 			Vector4f curColor = dps.getColor();
-			curColor.interpolate(_finalStarColor, 0.01f);
+			curColor.interpolate(_finalStarColor, _star_interpolation);
 			dps.setColor(curColor.x, curColor.y, curColor.z, curColor.w);
 			if (curColor.distance(_finalStarColor) < 0.01)
 				newStar();
@@ -126,7 +134,7 @@ public class Nebula {
 		if (_gsarray.size() < 400) {
 			GlowSphere gs = _gsarray.get(_gsarray.size()-1);
 			Vector4f curColor = gs.getColor();
-			curColor.interpolate(_finalGlowColor, 0.1f);
+			curColor.interpolate(_finalGlowColor, _glow_interpolation);
 			gs.setColor(curColor.x, curColor.y, curColor.z, curColor.w);
 			if (curColor.distance(_finalGlowColor) < 0.01)
 				newCloud();

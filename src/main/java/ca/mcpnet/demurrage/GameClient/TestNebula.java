@@ -1,39 +1,28 @@
 package ca.mcpnet.demurrage.GameClient;
 
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.opengl.Util;
 
-import ca.mcpnet.demurrage.GameClient.GL.Axis;
 import ca.mcpnet.demurrage.GameClient.GL.Camera;
-import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.Nebula;
 import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
 import ca.mcpnet.demurrage.GameClient.GL.Projection;
-import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
+import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
-import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.GUI;
-import de.matthiasmann.twl.Widget;
-import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
-import de.matthiasmann.twl.theme.ThemeManager;
 		
 public class TestNebula {
 
@@ -67,6 +56,11 @@ public class TestNebula {
 	
 	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
+	
+	private ByteBuffer _framebuffer;
+	private int[] _framearray;
+	private boolean _gifwrite;
+	private AnimatedGifEncoder _gifEncoder;
 
 	public TestNebula() throws LWJGLException, IOException {
 		// Display Init
@@ -88,7 +82,12 @@ public class TestNebula {
 		_camera = new Camera();
 		
 		_nebula = new Nebula();
+		_nebula.setInterpolations(1, 1);
 		_pixellationFBO = new PixellationFBO(1);
+		
+		_framebuffer = BufferUtils.createByteBuffer(Display.getWidth()*Display.getHeight()*4);
+		_framearray = new int[Display.getWidth()*Display.getHeight()];
+		
 	}
 	
 	public void run() {
@@ -98,7 +97,7 @@ public class TestNebula {
 		_projection.fromPerspective(60.0f, aspect, 0.1f, 10.0f);
 		_shaderProgramManager.setShaderProgram3DMatrixes(_projection.getProjectionMatrixFloatBuffer(), null);
 		
-		_camera.setRadius(2.0f);
+		_camera.setRadius(4.5f);
 		_camera.setUpVector(Vector3f.UNIT_Y);
 		_camera.setTarget(Vector3f.ZERO);
 		_camera.lookAtTarget();
@@ -116,14 +115,31 @@ public class TestNebula {
     		boolean leftButtonDown = Mouse.isButtonDown(0);
     		boolean rightButtonDown = Mouse.isButtonDown(1);
     		boolean middleButtonDown = Mouse.isButtonDown(2);
+    		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+    			if (!_gifwrite) {
+    				_gifwrite = true;
+    				_log.debug("Starting gif write");
+    				
+    				_gifEncoder = new AnimatedGifEncoder();
+    				_gifEncoder.setDelay(100);
+    				_gifEncoder.start("testgif.gif");
+    			}
+    		}
+    		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+    			if (_gifwrite) {
+    				_gifwrite = false;
+    				_log.debug("Stopping gif write");
+    				_gifEncoder.finish();
+    			}
+    		}
     		
-    		_camera.addRadius(dr/10000f);
     		if (rightButtonDown) {
     			_camera.addHorizontalRotationAboutTarget(-dx/400f);
     			_camera.addVerticalRotationAboutTarget(-dy/400f);
     		}
-    		if (middleButtonDown) {
-    			_camera.addRadius(dy/400f);
+    		if (dr != 0) {
+        		_camera.addRadius(dr/10000f);
+    			_log.info("camera radius set to "+_camera.getRadius());
     		}
     		_camera.lookAtTarget();
 
@@ -137,6 +153,29 @@ public class TestNebula {
     		_nebula.draw();
     		_pixellationFBO.end();
 
+    		// Take a screenshot
+    		if (_gifwrite) {
+    			int width = Display.getWidth();
+    			int height = Display.getHeight();
+    			GL11.glReadBuffer(GL11.GL_FRONT);
+	    		_framebuffer.rewind();
+	    		GL11.glReadPixels(0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, _framebuffer);
+	    		_framebuffer.rewind();
+	    		for (int x = 0; x < width; x++) {
+	    			for (int y = 0; y < height; y++) {
+	    				int i = (x + (width * y)) * 4;
+		    			int r = _framebuffer.get(i) & 0xFF;
+		    			int g = _framebuffer.get(i+1) & 0xFF;
+		    			int b = _framebuffer.get(i+2) & 0xFF;
+		    			_framearray[x + width * y] = (0xFF << 24) | (r << 16) | (g << 8) | b; 
+	    			}
+	    		}
+	    		BufferedImage bi = new BufferedImage(Display.getWidth(),Display.getHeight(),BufferedImage.TYPE_INT_RGB);
+	    		bi.setRGB(0 , 0, Display.getWidth(), Display.getHeight(), _framearray, 0, Display.getWidth());
+	    		
+	    		_gifEncoder.addFrame(bi);
+    		}
+    		
     		Display.update();
         }
         Display.destroy();		
