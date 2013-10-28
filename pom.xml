@@ -7,6 +7,12 @@
 
   <name>GameClient</name>
 
+  <parent>
+  	<groupId>ca.mcpnet.demurrage</groupId>
+  	<artifactId>GameEngine</artifactId>
+  	<version>0.1.1</version>
+  	<relativePath>../GameEngine</relativePath>
+  </parent>
   <properties>
     <finalName>${project.artifactId}-${project.version}.jar</finalName>
     <releaseName>${project.artifactId}-${project.version}-release.zip</releaseName>
@@ -182,10 +188,4 @@
 		<version>0.1.1</version>
 	</dependency>
   </dependencies>
-  <parent>
-  	<groupId>ca.mcpnet.demurrage</groupId>
-  	<artifactId>GameEngine</artifactId>
-  	<version>0.1.1</version>
-  	<relativePath>../GameEngine</relativePath>
-  </parent>
 </project>
