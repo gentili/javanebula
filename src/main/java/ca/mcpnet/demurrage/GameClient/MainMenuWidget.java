@@ -13,7 +13,7 @@ public class MainMenuWidget extends DialogLayout {
         for(int i=0 ; i<_menuButtons.length ; i++) {
             _menuButtons[i] = new Button();
         }
-        _menuButtons[0].setText("Login");
+        _menuButtons[0].setText("Connect");
         _menuButtons[1].setText("Settings");
         _menuButtons[2].setText("Exit");	        
     	
@@ -30,8 +30,8 @@ public class MainMenuWidget extends DialogLayout {
         setVerticalGroup(createParallelGroup(menuButtonsV));		
 	}
 
-	public void setLoginCallback(Runnable loginCallback) {
-    	_menuButtons[0].addCallback(loginCallback);	            
+	public void setConnectCallback(Runnable connectCallback) {
+    	_menuButtons[0].addCallback(connectCallback);	            
 	}
 	public void setSettingsCallback(Runnable settingsCallback) {
     	_menuButtons[1].addCallback(settingsCallback);	            

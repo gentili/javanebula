@@ -7,15 +7,14 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.Label;
 
-public class LoginDialog extends DialogLayout {
+public class SettingsDialog extends DialogLayout {
 	private EditField _efServer;
 	private EditField _efUsername;
 	private EditField _efPassword;
 	
-	public Button _btnLogin;
-	public Button _btnCancel;
+	public Button _btnSaveSettings;
 	
-	public LoginDialog(GameClientSettings gcs) {
+	public SettingsDialog(GameClientSettings gcs) {
 		_efServer = new EditField();
 		_efServer.setText(gcs.getServerAddr());
 		_efServer.addCallback(new Callback() {
@@ -47,22 +46,21 @@ public class LoginDialog extends DialogLayout {
 			@Override
 			public void callback(int key) {
 				if (key == Event.KEY_RETURN) {
-					_btnLogin.requestKeyboardFocus();
+					_btnSaveSettings.requestKeyboardFocus();
 				}
 			}
 		});
 		Label lPassword = new Label("Password");
 		lPassword.setLabelFor(_efPassword);
 		
-		_btnLogin = new Button("Login");
-		_btnCancel = new Button("Cancel");
+		_btnSaveSettings = new Button("Save Settings");
 		
         DialogLayout.Group hLabels = createParallelGroup(lServer, lName, lPassword);
         DialogLayout.Group hFields = createParallelGroup(_efServer, _efUsername, _efPassword);
         DialogLayout.Group hBtn = createSequentialGroup()
                 .addGap()   // right align the button by using a variable gap
-                .addWidget(_btnLogin)
-                .addWidget(_btnCancel)
+                .addWidget(_btnSaveSettings)
+                // Here's where another button goes
                 .addGap();
         
         setHorizontalGroup(createParallelGroup()
@@ -72,15 +70,11 @@ public class LoginDialog extends DialogLayout {
         		.addGroup(createParallelGroup(lServer, _efServer))
                 .addGroup(createParallelGroup(lName, _efUsername))
                 .addGroup(createParallelGroup(lPassword, _efPassword))
-                .addGroup(createParallelGroup(_btnLogin,_btnCancel)));
+                .addGroup(createParallelGroup(_btnSaveSettings)));
 	}
 	
-	public void setLoginCallback(Runnable loginCallback) {
-		_btnLogin.addCallback(loginCallback);
-	}
-	
-	public void setCancelCallback(Runnable cancelCallback) {
-		_btnCancel.addCallback(cancelCallback);
+	public void setSaveSettingsCallback(Runnable saveSettingsCallback) {
+		_btnSaveSettings.addCallback(saveSettingsCallback);
 	}
 	
 	public String getServer() {

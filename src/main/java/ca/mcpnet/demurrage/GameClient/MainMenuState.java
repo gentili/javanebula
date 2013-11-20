@@ -144,14 +144,14 @@ public class MainMenuState extends ClientState {
 		this._mainMenuRootPane.appendToLogPane(str);
 	}
 	public String getUsername() {
-		return this._mainMenuRootPane._logindialog.getUsername();
+		return this._mainMenuRootPane._settingsdialog.getUsername();
 	}
 	public String getPassword() {
-		return this._mainMenuRootPane._logindialog.getPassword();
+		return this._mainMenuRootPane._settingsdialog.getPassword();
 	}
 	
 	public void gotoLoginDialog() {
-		this._mainMenuRootPane.gotoLoginDialog();
+		this._mainMenuRootPane.gotoSettingsDialog();
 	}
 	
 	public void gotoMainMenu() {
@@ -165,7 +165,7 @@ public class MainMenuState extends ClientState {
 	public static class RootPane extends Widget {
 		
 		private MainMenuWidget _mainmenuwidget;
-		private LoginDialog _logindialog;
+		private SettingsDialog _settingsdialog;
 		private ScrollPane _logPane;
 		private StringBuilder _logBuf;
 		private SimpleTextAreaModel _logPaneTextAreaModel;
@@ -197,40 +197,34 @@ public class MainMenuState extends ClientState {
 							}
 						}
 					);
-			_mainmenuwidget.setLoginCallback(new Runnable() {
+			_mainmenuwidget.setConnectCallback(new Runnable() {
 				@Override
 				public void run() {
-					gotoLoginDialog();
+					_settingsdialog.setVisible(false);
+					String server = _settingsdialog.getServer();
+					appendToLogPane("Connecting to "+server+ "... ");
+					gc._concursionServerConnectionProcessor.connect(server, 1234);
 				}
 			});
 			
 			_mainmenuwidget.setSettingsCallback(new Runnable() {
 				@Override
 				public void run() {
-					gotoPopup("There are no settings!");
+					gotoSettingsDialog();
 				}
 			});
 			add(_mainmenuwidget);
 			
 			// Init the login dialog
-			_logindialog = new LoginDialog(gc.getGameClientSettings());
-			_logindialog.setVisible(false);
-			_logindialog.setLoginCallback(new Runnable() {
-				@Override
-				public void run() {
-					_logindialog.setVisible(false);
-					String server = _logindialog.getServer();
-					appendToLogPane("Connecting to "+server+ "... ");
-					gc._concursionServerConnectionProcessor.connect(server, 1234);
-				}
-			});
-			_logindialog.setCancelCallback(new Runnable() {
+			_settingsdialog = new SettingsDialog(gc.getGameClientSettings());
+			_settingsdialog.setVisible(false);
+			_settingsdialog.setSaveSettingsCallback(new Runnable() {
 				@Override
 				public void run() {
 					gotoMainMenu();
 				}
 			});
-			add(_logindialog);
+			add(_settingsdialog);
 			
 			_popup = new PopupWindow(this);
 			_popup.setVisible(false);
@@ -249,8 +243,8 @@ public class MainMenuState extends ClientState {
 			_mainmenuwidget.adjustSize();
 			_mainmenuwidget.setPosition((getParent().getWidth()-_mainmenuwidget.getWidth())/2, (getParent().getHeight()-_mainmenuwidget.getHeight())/2);
 
-			_logindialog.adjustSize();
-			_logindialog.setPosition((getParent().getWidth()-_logindialog.getWidth())/2, (getParent().getHeight()-_logindialog.getHeight())/2);
+			_settingsdialog.adjustSize();
+			_settingsdialog.setPosition((getParent().getWidth()-_settingsdialog.getWidth())/2, (getParent().getHeight()-_settingsdialog.getHeight())/2);
 			
 			_logPane.setSize(Display.getWidth() - 100, Display.getHeight() - 100);
 			_logPane.setPosition((getParent().getWidth()-_logPane.getWidth())/2, (getParent().getHeight()-_logPane.getHeight())/2);
@@ -269,22 +263,22 @@ public class MainMenuState extends ClientState {
 			_mainmenuwidget.setLoginFocus();
 		}
 		
-		public void gotoLoginDialog() {
+		public void gotoSettingsDialog() {
 			_mainmenuwidget.setVisible(false);
-			_logindialog.setVisible(true);
-			_logindialog._btnLogin.requestKeyboardFocus();
+			_settingsdialog.setVisible(true);
+			_settingsdialog._btnSaveSettings.requestKeyboardFocus();
 			_popup.setVisible(false);
 		}
 		
 		public void gotoMainMenu() {
 			_mainmenuwidget.setVisible(true);
-			_logindialog.setVisible(false);
+			_settingsdialog.setVisible(false);
 			_popup.setVisible(false);
 		}
 		
 		public void gotoPopup(String message) {
 			_mainmenuwidget.setVisible(false);
-			_logindialog.setVisible(false);
+			_settingsdialog.setVisible(false);
 			Label l = (Label) _popup.getChild(0);
 			l.setText(message);
 			_popup.openPopupCentered();
