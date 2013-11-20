@@ -213,7 +213,7 @@ public class MainMenuState extends ClientState {
 			add(_mainmenuwidget);
 			
 			// Init the login dialog
-			_logindialog = new LoginDialog();
+			_logindialog = new LoginDialog(gc.getGameClientSettings());
 			_logindialog.setVisible(false);
 			_logindialog.setLoginCallback(new Runnable() {
 				@Override

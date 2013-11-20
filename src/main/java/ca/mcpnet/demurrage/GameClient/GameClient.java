@@ -1,6 +1,7 @@
 package ca.mcpnet.demurrage.GameClient;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -38,10 +39,23 @@ public class GameClient {
 		PropertyConfigurator.configure(logprops);
 		
 		Logger log = Logger.getLogger("GameClient");
+		
+		// Check the environment for settings
+		Map<String, String> env = System.getenv();
+		if (!env.containsKey("LAUNCHER")) {
+			log.fatal("Bad environment");
+			System.exit(1);
+		}
+		GameClientSettings gcs = new GameClientSettings();
+		gcs.setUser(env.get("USER"));
+		gcs.setPassword(env.get("PASSWORD"));
+		gcs.setServerAddr(env.get("SERVERADDR"));
+		gcs.setServerPort(env.get("SERVERPORT"));
+		
 		log.info("Starting GameClient");
 		log.debug("java.library.path="+System.getProperty("java.library.path"));
 		try {
-			new GameClient().run();
+			new GameClient(gcs).run();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,14 +90,17 @@ public class GameClient {
 	private BindingList _bindingList;
 
 	private ConcurrentLinkedQueue<GameClientTask> _gameClientTaskQueue;
-
-	public GameClient() throws LWJGLException, IOException {
+	private GameClientSettings _gameClientSettings;
+	
+	public GameClient(GameClientSettings gcs) throws LWJGLException, IOException {
 		VERSION = GameClient.class.getPackage().getImplementationVersion();
 		if (VERSION == null) {
 			VERSION = "DEV-SNAPSHOT";
 		}
 
 		_log.info("Initializing GameClient "+VERSION);
+		
+		_gameClientSettings = gcs;
 		// Display Init
 		// Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
@@ -143,6 +160,10 @@ public class GameClient {
         _gui.destroy();
         _theme.destroy();
         Display.destroy();		
+	}
+	
+	public GameClientSettings getGameClientSettings() {
+		return _gameClientSettings;
 	}
 	
 	public void addGameClientTask(GameClientTask gct) {

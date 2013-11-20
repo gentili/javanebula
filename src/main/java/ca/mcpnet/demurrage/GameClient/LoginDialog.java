@@ -15,9 +15,9 @@ public class LoginDialog extends DialogLayout {
 	public Button _btnLogin;
 	public Button _btnCancel;
 	
-	public LoginDialog() {
+	public LoginDialog(GameClientSettings gcs) {
 		_efServer = new EditField();
-		_efServer.setText("127.0.0.1");
+		_efServer.setText(gcs.getServerAddr());
 		_efServer.addCallback(new Callback() {
             public void callback(int key) {
                 if(key == Event.KEY_RETURN) {
@@ -29,7 +29,7 @@ public class LoginDialog extends DialogLayout {
 		lServer.setLabelFor(_efServer);
 		
 		_efUsername = new EditField();
-		_efUsername.setText("testuser");
+		_efUsername.setText(gcs.getUser());
 		_efUsername.addCallback(new Callback() {
             public void callback(int key) {
                 if(key == Event.KEY_RETURN) {
@@ -42,7 +42,7 @@ public class LoginDialog extends DialogLayout {
 		
 		_efPassword = new EditField();
 		_efPassword.setPasswordMasking(true);
-		_efPassword.setText("testpassword");
+		_efPassword.setText(gcs.getPassword());
 		_efPassword.addCallback(new Callback() {
 			@Override
 			public void callback(int key) {
