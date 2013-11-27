@@ -104,7 +104,7 @@ public class GameClient {
 		// Display Init
 		// Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
-		Display.setFullscreen(true);
+		//Display.setFullscreen(true);
 		Display.setTitle("Demurrage GameClient "+VERSION);
 		Display.setVSyncEnabled(true);
 		

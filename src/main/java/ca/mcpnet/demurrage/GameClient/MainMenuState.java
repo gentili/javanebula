@@ -64,7 +64,7 @@ public class MainMenuState extends ClientState {
 		_gameClient.getShaderProgramManager().setShaderProgram3DMatrixes(projectionMatrix.toFloatBuffer(), null);
 
 		_gameClient.getGUI().setRootPane(_rootPane);
-		_mainMenuRootPane.setLoginFocus();
+		_mainMenuRootPane.setConnectFocus();
 
 		_camera.setTarget(Vector3f.ZERO);
 		_camera.setUpVector(Vector3f.UNIT_Y);
@@ -150,7 +150,7 @@ public class MainMenuState extends ClientState {
 		return this._mainMenuRootPane._settingsdialog.getPassword();
 	}
 	
-	public void gotoLoginDialog() {
+	public void gotoSettingsDialog() {
 		this._mainMenuRootPane.gotoSettingsDialog();
 	}
 	
@@ -200,7 +200,7 @@ public class MainMenuState extends ClientState {
 			_mainmenuwidget.setConnectCallback(new Runnable() {
 				@Override
 				public void run() {
-					_settingsdialog.setVisible(false);
+					// _settingsdialog.setVisible(false);
 					String server = _settingsdialog.getServer();
 					appendToLogPane("Connecting to "+server+ "... ");
 					gc._concursionServerConnectionProcessor.connect(server, 1234);
@@ -259,7 +259,7 @@ public class MainMenuState extends ClientState {
 			_logPane.setScrollPositionY(_logPane.getMaxScrollPosY());
 		}
 		
-		public void setLoginFocus() {
+		public void setConnectFocus() {
 			_mainmenuwidget.setLoginFocus();
 		}
 		
