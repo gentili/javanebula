@@ -45,7 +45,7 @@ public class MainMenuWidget extends DialogLayout {
 		return super.handleEvent(evt);
 	}
 
-	public void setLoginFocus() {
+	public void setConnectFocus() {
 		_menuButtons[0].requestKeyboardFocus();
 	}	
 }

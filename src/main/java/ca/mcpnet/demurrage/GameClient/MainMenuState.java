@@ -16,7 +16,6 @@ import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
 import de.matthiasmann.twl.Label;
-import de.matthiasmann.twl.PopupWindow;
 import de.matthiasmann.twl.ScrollPane;
 import de.matthiasmann.twl.ScrollPane.Fixed;
 import de.matthiasmann.twl.TextArea;
@@ -169,7 +168,7 @@ public class MainMenuState extends ClientState {
 		private ScrollPane _logPane;
 		private StringBuilder _logBuf;
 		private SimpleTextAreaModel _logPaneTextAreaModel;
-		private PopupWindow _popup;
+		private PopupWindow2 _popup;
 		int linecount = 0;
 
 		RootPane(final GameClient gc) {
@@ -226,7 +225,7 @@ public class MainMenuState extends ClientState {
 			});
 			add(_settingsdialog);
 			
-			_popup = new PopupWindow(this);
+			_popup = new PopupWindow2(this);
 			_popup.setVisible(false);
 			_popup.add(new Label("Something Unexpected Happened!"));
 			_popup.setRequestCloseCallback(new Runnable() {
@@ -235,6 +234,15 @@ public class MainMenuState extends ClientState {
 					gotoMainMenu();
 				}
 			});
+			/*
+			_efServer.addCallback(new Callback() {
+	            public void callback(int key) {
+	                if(key == Event.KEY_RETURN) {
+	                    _efUsername.requestKeyboardFocus();
+	                }
+	            }
+	        });
+	        */
 			_popup.getOrCreateActionMap();
 		}
 		
@@ -260,7 +268,7 @@ public class MainMenuState extends ClientState {
 		}
 		
 		public void setConnectFocus() {
-			_mainmenuwidget.setLoginFocus();
+			_mainmenuwidget.setConnectFocus();
 		}
 		
 		public void gotoSettingsDialog() {
@@ -274,6 +282,7 @@ public class MainMenuState extends ClientState {
 			_mainmenuwidget.setVisible(true);
 			_settingsdialog.setVisible(false);
 			_popup.setVisible(false);
+			_mainmenuwidget.setConnectFocus();
 		}
 		
 		public void gotoPopup(String message) {
