@@ -10,6 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
@@ -71,7 +72,7 @@ public class GameClient {
 		log.info("Main Thread Exiting");
 	}    
 	
-	private Widget _emptyRootWidget;
+	private GameClientRootPane _gameClientRootPane;
 	private GUI _gui;
 	private LWJGLRenderer _renderer;
 	private ThemeManager _theme;
@@ -102,7 +103,7 @@ public class GameClient {
 		
 		_gameClientSettings = gcs;
 		// Display Init
-		// Display.setDisplayMode(new DisplayMode(1280,1024));
+		//Display.setDisplayMode(new DisplayMode(1280,1024));
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
 		Display.setFullscreen(true);
 		Display.setTitle("Demurrage GameClient "+VERSION);
@@ -122,9 +123,9 @@ public class GameClient {
 
         // TWL Menu Init
 		_renderer = new LWJGLRenderer();
-        _emptyRootWidget = new Widget();
-        _emptyRootWidget.setTheme("");
-        _gui = new GUI(_emptyRootWidget, _renderer);
+        _gameClientRootPane = new GameClientRootPane(this);
+        _gameClientRootPane.setTheme("");
+        _gui = new GUI(_gameClientRootPane, _renderer);
         _theme = ThemeManager.createThemeManager(
                 TestNetworkClient.class.getResource("/theme.xml"), _renderer);
         _gui.applyTheme(_theme);
@@ -185,10 +186,6 @@ public class GameClient {
 		_terminate = true;
 	}
 	
-	public GUI getGUI() {
-		return _gui;
-	}
-	
 	public ThemeManager getTheme() {
 		return _theme;
 	}
@@ -213,6 +210,10 @@ public class GameClient {
 	
 	public BindingList getBindingList() {
 		return _bindingList;
+	}
+
+	public GameClientRootPane getGameClientRootPane() {
+		return _gameClientRootPane;
 	}
 
 }

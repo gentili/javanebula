@@ -15,25 +15,17 @@ import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
 import ca.mcpnet.demurrage.GameClient.jme.FastMath;
 import ca.mcpnet.demurrage.GameClient.jme.Matrix4f;
 import ca.mcpnet.demurrage.GameClient.jme.Vector3f;
-import de.matthiasmann.twl.Label;
-import de.matthiasmann.twl.ScrollPane;
-import de.matthiasmann.twl.ScrollPane.Fixed;
-import de.matthiasmann.twl.TextArea;
-import de.matthiasmann.twl.Widget;
-import de.matthiasmann.twl.textarea.SimpleTextAreaModel;
 
 
 public class MainMenuState extends ClientState {
 
 	private Camera _camera;
-	RootPane _mainMenuRootPane;
 	private Axis _axis;
 	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
 	
 	MainMenuState(GameClient gc) {
 		super(gc);
-		_rootPane = _mainMenuRootPane = new RootPane(gc);
 		
 		_axis = new Axis();
 		_nebula = new Nebula();
@@ -62,8 +54,7 @@ public class MainMenuState extends ClientState {
 		projectionMatrix.fromPerspective(60.0f, aspect, 1.0f, 8.0f);
 		_gameClient.getShaderProgramManager().setShaderProgram3DMatrixes(projectionMatrix.toFloatBuffer(), null);
 
-		_gameClient.getGUI().setRootPane(_rootPane);
-		_mainMenuRootPane.setConnectFocus();
+		_gameClient.getGameClientRootPane().setConnectFocus();
 
 		_camera.setTarget(Vector3f.ZERO);
 		_camera.setUpVector(Vector3f.UNIT_Y);
@@ -139,14 +130,16 @@ public class MainMenuState extends ClientState {
 	/*
 	 * Passthrough functions to the root pane
 	 */
-	public void appendToLogPane(String str) {
-		this._mainMenuRootPane.appendToLogPane(str);
-	}
 	public String getUsername() {
-		return this._mainMenuRootPane._settingsdialog.getUsername();
+		return this._gameClient.getGameClientRootPane()._settingsdialog.getUsername();
 	}
 	public String getPassword() {
-		return this._mainMenuRootPane._settingsdialog.getPassword();
+		return this._gameClient.getGameClientRootPane()._settingsdialog.getPassword();
+	}
+
+	/*
+	public void appendToLogPane(String str) {
+		this._mainMenuRootPane.appendToLogPane(str);
 	}
 	
 	public void gotoSettingsDialog() {
@@ -160,137 +153,5 @@ public class MainMenuState extends ClientState {
 	public void gotoPopup(String message) {
 		this._mainMenuRootPane.gotoPopup(message);
 	}
-	
-	public static class RootPane extends Widget {
-		
-		private MainMenuWidget _mainmenuwidget;
-		private SettingsDialog _settingsdialog;
-		private ScrollPane _logPane;
-		private StringBuilder _logBuf;
-		private SimpleTextAreaModel _logPaneTextAreaModel;
-		private PopupWindow2 _popup;
-		int linecount = 0;
-
-		RootPane(final GameClient gc) {
-			setTheme("");
-			// Init the logging output pane
-			_logPaneTextAreaModel = new SimpleTextAreaModel();
-			_logPane = new ScrollPane(new TextArea(_logPaneTextAreaModel));
-			_logPane.setTheme("scrollinglogpane");
-			_logPane.setFixed(Fixed.HORIZONTAL);
-			_logPane.setExpandContentSize(true);
-			_logPane.setEnabled(false);
-			_logPane.setVisible(true);
-			_logBuf = new StringBuilder();
-			appendToLogPane("*** DEMURRAGE GAMECLIENT "+GameClient.VERSION+" ***\n\n");
-			_logPane.validateLayout();
-
-			add(_logPane);
-			// Init the main menu
-			_mainmenuwidget = new MainMenuWidget();
-			_mainmenuwidget.setExitCallback(
-					new Runnable() {
-						@Override
-						public void run() { 
-							gc.terminate();
-							}
-						}
-					);
-			_mainmenuwidget.setConnectCallback(new Runnable() {
-				@Override
-				public void run() {
-					// _settingsdialog.setVisible(false);
-					String server = _settingsdialog.getServer();
-					appendToLogPane("Connecting to "+server+ "... ");
-					gc._concursionServerConnectionProcessor.connect(server, 1234);
-				}
-			});
-			
-			_mainmenuwidget.setSettingsCallback(new Runnable() {
-				@Override
-				public void run() {
-					gotoSettingsDialog();
-				}
-			});
-			add(_mainmenuwidget);
-			
-			// Init the login dialog
-			_settingsdialog = new SettingsDialog(gc.getGameClientSettings());
-			_settingsdialog.setVisible(false);
-			_settingsdialog.setSaveSettingsCallback(new Runnable() {
-				@Override
-				public void run() {
-					gotoMainMenu();
-				}
-			});
-			add(_settingsdialog);
-			
-			_popup = new PopupWindow2(this);
-			_popup.setVisible(false);
-			_popup.add(new Label("Something Unexpected Happened!"));
-			_popup.setRequestCloseCallback(new Runnable() {
-				@Override
-				public void run() {
-					gotoMainMenu();
-				}
-			});
-			/*
-			_efServer.addCallback(new Callback() {
-	            public void callback(int key) {
-	                if(key == Event.KEY_RETURN) {
-	                    _efUsername.requestKeyboardFocus();
-	                }
-	            }
-	        });
-	        */
-			_popup.getOrCreateActionMap();
-		}
-		
-		@Override
-		protected void layout() {
-			_mainmenuwidget.adjustSize();
-			_mainmenuwidget.setPosition((getParent().getWidth()-_mainmenuwidget.getWidth())/2, (getParent().getHeight()-_mainmenuwidget.getHeight())/2);
-
-			_settingsdialog.adjustSize();
-			_settingsdialog.setPosition((getParent().getWidth()-_settingsdialog.getWidth())/2, (getParent().getHeight()-_settingsdialog.getHeight())/2);
-			
-			_logPane.setSize(Display.getWidth() - 100, Display.getHeight() - 100);
-			_logPane.setPosition((getParent().getWidth()-_logPane.getWidth())/2, (getParent().getHeight()-_logPane.getHeight())/2);
-			
-			_popup.adjustSize();
-			_popup.setPosition((getParent().getWidth()-_popup.getWidth())/2, (getParent().getHeight()-_popup.getHeight())/2);
-		}
-
-		private void appendToLogPane(String str) {
-			_logBuf.append(str);
-			_logPaneTextAreaModel.setText(_logBuf.toString());
-			_logPane.setScrollPositionY(_logPane.getMaxScrollPosY());
-		}
-		
-		public void setConnectFocus() {
-			_mainmenuwidget.setConnectFocus();
-		}
-		
-		public void gotoSettingsDialog() {
-			_mainmenuwidget.setVisible(false);
-			_settingsdialog.setVisible(true);
-			_settingsdialog._btnSaveSettings.requestKeyboardFocus();
-			_popup.setVisible(false);
-		}
-		
-		public void gotoMainMenu() {
-			_mainmenuwidget.setVisible(true);
-			_settingsdialog.setVisible(false);
-			_popup.setVisible(false);
-			_mainmenuwidget.setConnectFocus();
-		}
-		
-		public void gotoPopup(String message) {
-			_mainmenuwidget.setVisible(false);
-			_settingsdialog.setVisible(false);
-			Label l = (Label) _popup.getChild(0);
-			l.setText(message);
-			_popup.openPopupCentered();
-		}
-	}
+	 */
 }

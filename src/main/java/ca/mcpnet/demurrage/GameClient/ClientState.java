@@ -1,10 +1,8 @@
 package ca.mcpnet.demurrage.GameClient;
 
-import de.matthiasmann.twl.Widget;
 
 public abstract class ClientState {
 
-	Widget _rootPane;
 	final GameClient _gameClient;
 	
 	ClientState(GameClient gc) {

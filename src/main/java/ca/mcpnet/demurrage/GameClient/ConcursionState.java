@@ -74,13 +74,12 @@ public class ConcursionState extends ClientState {
 		_axis = new Axis();
 		_timeDelta = 0;
 
-		_rootPane = _concursionStateRootPane = new RootPane(this);
+		_concursionStateRootPane = new RootPane(this);
 	}
 
 	@Override
 	public void onEnterState() {
-		_gameClient.getGUI().setRootPane(_rootPane);
-		
+		_gameClient.getGameClientRootPane().setClientStateRootPane(_concursionStateRootPane);
 		resetLinkBindingModel();
 		
 		// Do the main window
@@ -434,6 +433,9 @@ public class ConcursionState extends ClientState {
 		
 		@Override
 		protected void layout() {
+			System.out.println(this.getParent().getWidth());
+			System.out.println(this.getParent().getHeight());
+
 			_linkBindingBox.setSize(getWidth()-20, getHeight() - 240);
 			_linkBindingBox.setPosition(10, 10);
 			

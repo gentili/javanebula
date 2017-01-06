@@ -18,6 +18,7 @@ public class SplashState extends ClientState {
 	
 	StartStateEnum _startstate;
 	boolean _skip;
+	SplashWidget _rootPane;
 	
 	SplashState(GameClient gc) {
 		super(gc);
@@ -26,11 +27,12 @@ public class SplashState extends ClientState {
 
 	@Override
 	public void onEnterState() {
-		_gameClient.getGUI().setRootPane(_rootPane);
+		_gameClient.getGameClientRootPane().setClientStateRootPane(_rootPane);
 		_skip = false;
 		_startstate = StartStateEnum.START;
 		if (_rootPane.getTintAnimator() == null) {
-			_rootPane.setTintAnimator(new TintAnimator(_gameClient.getGUI()));
+			// WARN: Might not work, expected GUI object
+			_rootPane.setTintAnimator(new TintAnimator(_gameClient.getGameClientRootPane())); 
 		}
 		_rootPane.getTintAnimator().setColor(Color.BLACK);
 	}

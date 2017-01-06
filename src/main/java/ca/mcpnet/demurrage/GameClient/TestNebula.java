@@ -65,13 +65,15 @@ public class TestNebula {
 
 	public TestNebula() throws LWJGLException, IOException {
 		// Display Init
-		Display.setDisplayMode(new DisplayMode(640,200));
+		Display.setDisplayMode(new DisplayMode(640,480));
 		Display.setTitle("Nebula Test");
 		Display.setVSyncEnabled(true);
 		
 		PixelFormat pixelFormat = new PixelFormat();
 		ContextAttribs contextAttribs = new ContextAttribs(3,2);
 		contextAttribs = contextAttribs.withProfileCompatibility(true);
+		// contextAttribs = contextAttribs.withForwardCompatible(true);
+		// contextAttribs = contextAttribs.withProfileCore(true);
 		Display.create(pixelFormat, contextAttribs);
 		
 		_log.info("LWJGL version:  " + org.lwjgl.Sys.getVersion());
@@ -84,7 +86,7 @@ public class TestNebula {
 		
 		_nebula = new Nebula();
 		_nebula.setInterpolations(1, 1);
-		_pixellationFBO = new PixellationFBO(1);
+		_pixellationFBO = new PixellationFBO(6);
 		
 		_framebuffer = BufferUtils.createByteBuffer(Display.getWidth()*Display.getHeight()*4);
 		_framearray = new int[Display.getWidth()*Display.getHeight()];

@@ -30,12 +30,12 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 
 		@Override
 		public void execute(GameClient gc) {
-			gc._mainMenuState.appendToLogPane("Disconnected from Concursion Server!\n");
+			gc.getGameClientRootPane().appendToLogPane("Disconnected from Concursion Server!\n");
 			// RETURN: Disconnect everyone
 			// Return to the main menu state
 			gc.changeState(gc._mainMenuState);
 			// Fire the transient message window up
-			gc._mainMenuState.gotoPopup("Disconnected from Concursion Server!");			
+			gc.getGameClientRootPane().gotoPopup("Disconnected from Concursion Server!");			
 		}
 	}
 
@@ -56,10 +56,10 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 
 		@Override
 		public void execute(GameClient gc) {
-			gc._mainMenuState.appendToLogPane("Success!\n");
+			gc.getGameClientRootPane().appendToLogPane("Success!\n");
 			String username = gc._mainMenuState.getUsername();
 			String password = gc._mainMenuState.getPassword();
-			gc._mainMenuState.appendToLogPane("Logging in user "+ username + "... ");
+			gc.getGameClientRootPane().appendToLogPane("Logging in user "+ username + "... ");
 			gc._concursionServerConnectionProcessor.sendLoginRequest(username, password);			
 		}
 	}
@@ -80,8 +80,8 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 
 		@Override
 		public void execute(GameClient gc) {
-			gc._mainMenuState.appendToLogPane("Failure: "+_reason+"\n");
-			gc._mainMenuState.gotoPopup("Failed to connect : "+_reason);
+			gc.getGameClientRootPane().appendToLogPane("Failure: "+_reason+"\n");
+			gc.getGameClientRootPane().gotoPopup("Failed to connect : "+_reason);
 		}
 		
 	}
@@ -102,8 +102,8 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 
 		@Override
 		public void execute(GameClient gc) {
-			gc._mainMenuState.appendToLogPane("Failure: "+_reason+"\n");
-			gc._mainMenuState.gotoPopup("Login Failed : "+_reason);			
+			gc.getGameClientRootPane().appendToLogPane("Failure: "+_reason+"\n");
+			gc.getGameClientRootPane().gotoPopup("Login Failed : "+_reason);			
 		}
 		
 	}
@@ -118,8 +118,8 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 
 		@Override
 		public void execute(GameClient gc) {
-			gc._mainMenuState.appendToLogPane("Success!\n");
-			gc._mainMenuState.appendToLogPane("Downloading Concursion... ");
+			gc.getGameClientRootPane().appendToLogPane("Success!\n");
+			gc.getGameClientRootPane().appendToLogPane("Downloading Concursion... ");
 			gc._concursionServerConnectionProcessor.sendServerTimeRequest();
 			gc._concursionServerConnectionProcessor.sendConcursionSubscriptionRequest();
 		}		
@@ -174,8 +174,8 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 		@Override
 		public void execute(GameClient gc) {
 			gc.initConcursion(_concursion);
-			gc._mainMenuState.appendToLogPane("Success!\n");
-			gc._mainMenuState.appendToLogPane("Downloading Bindings... ");
+			gc.getGameClientRootPane().appendToLogPane("Success!\n");
+			gc.getGameClientRootPane().appendToLogPane("Downloading Bindings... ");
 			gc._concursionServerConnectionProcessor.sendBindingListSubscriptionRequest();
 		}		
 	}
@@ -382,7 +382,7 @@ public class ConcursionServerMessageProcessor implements ConcursionServerCallbac
 		@Override
 		public void execute(GameClient gc) {
 			gc.initBindingList(_bindingList);
-			gc._mainMenuState.appendToLogPane("Success!\n");
+			gc.getGameClientRootPane().appendToLogPane("Success!\n");
 			gc.changeState(gc._concursionState);
 		}
 		
