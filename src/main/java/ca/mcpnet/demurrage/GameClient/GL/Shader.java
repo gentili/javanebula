@@ -10,7 +10,6 @@ import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import ca.mcpnet.demurrage.GameClient.GameClient;
 import ca.mcpnet.demurrage.GameClient.jme.BufferUtils;
 
 public class Shader {
@@ -20,7 +19,7 @@ public class Shader {
 	public Shader(int type, String resource) throws IOException {
 		// Load in the source
 		
-		InputStream istream = GameClient.class.getResourceAsStream(resource);
+		InputStream istream = Shader.class.getResourceAsStream(resource);
 		if (istream == null) {
 			throw new RuntimeException("Could not find resource "+resource);
 		}

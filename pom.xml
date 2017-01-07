@@ -2,22 +2,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>GameClient</artifactId>
+  <artifactId>JavaNebula</artifactId>
   <packaging>jar</packaging>
 
   <name>GameClient</name>
 
-  <parent>
-  	<groupId>ca.mcpnet.demurrage</groupId>
-  	<artifactId>GameEngine</artifactId>
-  	<version>0.1.1</version>
-  	<relativePath>../GameEngine</relativePath>
-  </parent>
   <properties>
     <finalName>${project.artifactId}-${project.version}.jar</finalName>
     <releaseName>${project.artifactId}-${project.version}-release.zip</releaseName>
     <releaseVersion>${project.version}</releaseVersion>
-    <main.class>ca.mcpnet.demurrage.GameClient.GameClient</main.class>
+    <main.class>ca.mcpnet.demurrage.GameClient.TestNebula</main.class>
     <natives>${basedir}/target/natives/</natives>
     <release.natives>natives/</release.natives>
   </properties>
@@ -159,33 +153,31 @@
   <dependencies>
     <!-- The following are GameClient specific -->
 	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.16</version>
+		<scope>compile</scope>
+	</dependency>
+	<dependency>
 		<groupId>org.lwjgl.lwjgl</groupId>
 		<artifactId>lwjgl</artifactId>
 		<version>2.9.0</version>
 	</dependency>
 	<dependency>
-		<groupId>slick</groupId>
-		<artifactId>slick</artifactId>
-		<version>274</version>
-	</dependency>
-	<dependency>
-		<groupId>xpp3</groupId>
-		<artifactId>xpp3</artifactId>
-		<version>1.1.4c</version>
+		<groupId>org.apache.directory.studio</groupId>
+		<artifactId>org.apache.commons.io</artifactId>
+		<version>2.1</version>
 		<type>jar</type>
 		<scope>compile</scope>
 	</dependency>
 	<dependency>
-		<groupId>de.matthiasmann.twl</groupId>
-		<artifactId>twl</artifactId>
-		<version>1.082</version>
-        <type>jar</type>
+		<groupId>org.apache.directory.studio</groupId>
+		<artifactId>org.apache.commons.lang</artifactId>
+		<version>2.6</version>
+		<type>jar</type>
 		<scope>compile</scope>
 	</dependency>
-	<dependency>
-		<groupId>ca.mcpnet.demurrage</groupId>
-		<artifactId>Common</artifactId>
-		<version>0.1.1</version>
-	</dependency>
   </dependencies>
+  <groupId>ca.mcpnet</groupId>
+  <version>0.0.1</version>
 </project>

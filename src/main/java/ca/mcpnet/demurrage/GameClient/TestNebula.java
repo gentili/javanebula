@@ -59,8 +59,6 @@ public class TestNebula {
 	
 	private ByteBuffer _framebuffer;
 	private int[] _framearray;
-	private boolean _gifwrite;
-	private AnimatedGifEncoder _gifEncoder;
 	private int _curframe;
 
 	public TestNebula() throws LWJGLException, IOException {
@@ -120,27 +118,6 @@ public class TestNebula {
     		boolean middleButtonDown = Mouse.isButtonDown(2);
     		
     		_curframe++;
-    		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-    			if (!_gifwrite) {
-    				_curframe = 0;
-    				_gifwrite = true;
-    				_log.debug("Starting gif write");
-    				
-    				_gifEncoder = new AnimatedGifEncoder();
-    				_gifEncoder.setDelay(50);
-    				_gifEncoder.setRepeat(0);
-    				_gifEncoder.setDispose(0);
-    				_gifEncoder.setQuality(1);
-    				_gifEncoder.start("testgif.gif");
-    			}
-    		}
-    		if (_curframe >= 100) {
-    			if (_gifwrite) {
-    				_gifwrite = false;
-    				_log.debug("Stopping gif write");
-    				_gifEncoder.finish();
-    			}
-    		}
     		
     		if (rightButtonDown) {
     			_camera.addHorizontalRotationAboutTarget(-dx/400f);
@@ -149,9 +126,6 @@ public class TestNebula {
     		if (dr != 0) {
         		_camera.addRadius(dr/10000f);
     			_log.info("camera radius set to "+_camera.getRadius());
-    		}
-    		if (_gifwrite) {
-    			_camera.addHorizontalRotationAboutTarget((float) (2*Math.PI/100));
     		}
     		_camera.lookAtTarget();
 
@@ -164,29 +138,6 @@ public class TestNebula {
             _pixellationFBO.begin();
     		_nebula.draw();
     		_pixellationFBO.end();
-
-    		// Take a screenshot
-    		if (_gifwrite) {
-    			int width = Display.getWidth();
-    			int height = Display.getHeight();
-    			GL11.glReadBuffer(GL11.GL_FRONT);
-	    		_framebuffer.rewind();
-	    		GL11.glReadPixels(0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, _framebuffer);
-	    		_framebuffer.rewind();
-	    		for (int x = 0; x < width; x++) {
-	    			for (int y = 0; y < height; y++) {
-	    				int i = (x + (width * y)) * 4;
-		    			int r = _framebuffer.get(i) & 0xFF;
-		    			int g = _framebuffer.get(i+1) & 0xFF;
-		    			int b = _framebuffer.get(i+2) & 0xFF;
-		    			_framearray[x + width * y] = (0xFF << 24) | (r << 16) | (g << 8) | b; 
-	    			}
-	    		}
-	    		BufferedImage bi = new BufferedImage(Display.getWidth(),Display.getHeight(),BufferedImage.TYPE_INT_RGB);
-	    		bi.setRGB(0 , 0, Display.getWidth(), Display.getHeight(), _framearray, 0, Display.getWidth());
-	    		
-	    		_gifEncoder.addFrame(bi);
-    		}
     		
     		Display.update();
         }

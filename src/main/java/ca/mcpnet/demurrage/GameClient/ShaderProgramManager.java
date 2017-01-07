@@ -8,15 +8,12 @@ import java.util.Vector;
 import org.lwjgl.opengl.GL20;
 
 import ca.mcpnet.demurrage.GameClient.GL.Axis;
-import ca.mcpnet.demurrage.GameClient.GL.ConcursionEdge;
-import ca.mcpnet.demurrage.GameClient.GL.ConcursionPoint;
 import ca.mcpnet.demurrage.GameClient.GL.PixellationFBO;
 import ca.mcpnet.demurrage.GameClient.GL.PointStar;
 import ca.mcpnet.demurrage.GameClient.GL.GlowSphere;
 import ca.mcpnet.demurrage.GameClient.GL.Shader;
 import ca.mcpnet.demurrage.GameClient.GL.ShaderProgram2D;
 import ca.mcpnet.demurrage.GameClient.GL.ShaderProgram3D;
-import ca.mcpnet.demurrage.GameClient.GL.WireSphere;
 
 public class ShaderProgramManager {
 	private Vector<ShaderProgram3D> _shaderProgram3DList;
@@ -52,12 +49,6 @@ public class ShaderProgramManager {
         _concursionPointShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionPoint.frg"));
         _concursionPointShaderProgram.attachAndLink();
         _shaderProgram3DList.add(_concursionPointShaderProgram);
-
-        _concursionEdgeShaderProgram = new ShaderProgram3D();
-        _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionEdge.vrt"));
-        _concursionEdgeShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/concursionEdge.frg"));
-        _concursionEdgeShaderProgram.attachAndLink();
-        _shaderProgram3DList.add(_concursionEdgeShaderProgram);
         
         _glowSphereShaderProgram = new ShaderProgram3D();
         _glowSphereShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/glowSphere.vrt"));
@@ -78,10 +69,7 @@ public class ShaderProgramManager {
         _shaderProgram2DList.add(_scanLineShaderProgram);
         
         Axis.setShaderProgramManager(this);
-        ConcursionEdge.setShaderProgramManager(this);
-        ConcursionPoint.setShaderProgramManager(this);
         GlowSphere.setShaderProgramManager(this);
-        WireSphere.setShaderProgramManager(this);
         PointStar.setShaderProgramManager(this);
         PixellationFBO.setShaderProgramManager(this);
 	}

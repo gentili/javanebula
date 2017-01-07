@@ -22,23 +22,17 @@ public class Nebula {
 	private float _star_interpolation = 0.01f;
 	private float _glow_interpolation = 0.1f;
 	
-	private WireSphere _wiresphere;
 	private ArrayList<GlowSphere> _gsarray;
 	private ArrayList<DoublePointStar> _dpsarray;
 	private Vector4f _finalGlowColor;
 	private Vector4f _finalStarColor;
 
 	public Nebula() {
-		_wiresphere = new WireSphere();
 		_gsarray = new ArrayList<GlowSphere>();
 		_dpsarray = new ArrayList<DoublePointStar>();
 		_finalGlowColor = new Vector4f();
 		_finalStarColor = new Vector4f();
-		
-		_wiresphere.setColor(0f, 1.0f, 0f, 1f);
-		_wiresphere.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(CONTAINER_RADIUS));
-		_wiresphere.setScale(MAX_SPHERE);
-		
+				
 		GlowSphere gs = new GlowSphere(MAX_SPHERE);
 		gs.setTranslation(Vector3f.UNIT_XYZ.normalize().mult(CONTAINER_RADIUS));
 		setColor(gs);
