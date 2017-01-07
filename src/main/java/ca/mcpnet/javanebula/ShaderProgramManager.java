@@ -20,11 +20,8 @@ public class ShaderProgramManager {
 	private Vector<ShaderProgram2D> _shaderProgram2DList;
 
 	private ShaderProgram3D _simpleIndexedColorShaderProgram;
-	private ShaderProgram3D _cameraIsLightShaderProgram;
 	private ShaderProgram3D _concursionPointShaderProgram;
-	private ShaderProgram3D _concursionEdgeShaderProgram;
 	private ShaderProgram3D _glowSphereShaderProgram;
-	private ShaderProgram2D _passThroughShaderProgram;
 	private ShaderProgram2D _scanLineShaderProgram;
 	
 
@@ -37,12 +34,6 @@ public class ShaderProgramManager {
 		_simpleIndexedColorShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/simpleIndexedColor.frg"));
 		_simpleIndexedColorShaderProgram.attachAndLink();
 		_shaderProgram3DList.add(_simpleIndexedColorShaderProgram);
-
-		_cameraIsLightShaderProgram = new ShaderProgram3D();
-        _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/cameraIsLight.vrt"));
-        _cameraIsLightShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/cameraIsLight.frg"));
-        _cameraIsLightShaderProgram.attachAndLink();
-        _shaderProgram3DList.add(_cameraIsLightShaderProgram);
         
         _concursionPointShaderProgram = new ShaderProgram3D();
         _concursionPointShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/concursionPoint.vrt"));
@@ -55,13 +46,7 @@ public class ShaderProgramManager {
         _glowSphereShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/glowSphere.frg"));
         _glowSphereShaderProgram.attachAndLink();
         _shaderProgram3DList.add(_glowSphereShaderProgram);
-        
-        _passThroughShaderProgram = new ShaderProgram2D();
-        _passThroughShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/passThrough.vrt"));
-        _passThroughShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/passThrough.frg"));
-        _passThroughShaderProgram.attachAndLink();
-        _shaderProgram2DList.add(_passThroughShaderProgram);
-        
+                
         _scanLineShaderProgram = new ShaderProgram2D();
         _scanLineShaderProgram.addShader(new Shader(GL20.GL_VERTEX_SHADER,"/scanLine.vrt"));
         _scanLineShaderProgram.addShader(new Shader(GL20.GL_FRAGMENT_SHADER,"/scanLine.frg"));
@@ -78,16 +63,8 @@ public class ShaderProgramManager {
 		return _simpleIndexedColorShaderProgram;
 	}
 
-	public ShaderProgram3D cameraIsLightShaderProgram() {
-		return _cameraIsLightShaderProgram;
-	}
-	
 	public ShaderProgram3D concursionPointShaderProgram() {
 		return _concursionPointShaderProgram;
-	}
-
-	public ShaderProgram3D concursionEdgeShaderProgram() {
-		return _concursionEdgeShaderProgram;
 	}
 
 	public ShaderProgram3D glowSphereShaderProgram() {
@@ -108,10 +85,6 @@ public class ShaderProgramManager {
 
 	}
 
-	public ShaderProgram2D passThroughShaderProgram() {
-		return _passThroughShaderProgram;
-	}
-	
 	public ShaderProgram2D scanLineShaderProgram() {
 		return _scanLineShaderProgram;
 	}
