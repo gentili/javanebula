@@ -1,14 +1,11 @@
 package ca.mcpnet.javanebula;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
@@ -20,8 +17,6 @@ import ca.mcpnet.javanebula.GL.Camera;
 import ca.mcpnet.javanebula.GL.Nebula;
 import ca.mcpnet.javanebula.GL.PixellationFBO;
 import ca.mcpnet.javanebula.GL.Projection;
-import ca.mcpnet.javanebula.jme.BufferUtils;
-import ca.mcpnet.javanebula.jme.FastMath;
 import ca.mcpnet.javanebula.jme.Vector3f;
 		
 public class TestNebula {
@@ -57,10 +52,6 @@ public class TestNebula {
 	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
 	
-	private ByteBuffer _framebuffer;
-	private int[] _framearray;
-	private int _curframe;
-
 	public TestNebula() throws LWJGLException, IOException {
 		// Display Init
 		Display.setDisplayMode(new DisplayMode(640,480));
@@ -70,8 +61,8 @@ public class TestNebula {
 		PixelFormat pixelFormat = new PixelFormat();
 		ContextAttribs contextAttribs = new ContextAttribs(3,2);
 		contextAttribs = contextAttribs.withProfileCompatibility(true);
-		// contextAttribs = contextAttribs.withForwardCompatible(true);
-		// contextAttribs = contextAttribs.withProfileCore(true);
+		//contextAttribs = contextAttribs.withForwardCompatible(true);
+		//contextAttribs = contextAttribs.withProfileCore(true);
 		Display.create(pixelFormat, contextAttribs);
 		
 		_log.info("LWJGL version:  " + org.lwjgl.Sys.getVersion());
@@ -84,11 +75,7 @@ public class TestNebula {
 		
 		_nebula = new Nebula();
 		_nebula.setInterpolations(1, 1);
-		_pixellationFBO = new PixellationFBO(6);
-		
-		_framebuffer = BufferUtils.createByteBuffer(Display.getWidth()*Display.getHeight()*4);
-		_framearray = new int[Display.getWidth()*Display.getHeight()];
-		
+		_pixellationFBO = new PixellationFBO(6);		
 	}
 	
 	public void run() {
@@ -104,20 +91,12 @@ public class TestNebula {
 		_camera.lookAtTarget();
 		
         while(!Display.isCloseRequested()) {
-    		double time = System.currentTimeMillis();
-    		time = System.nanoTime()/1000000;
-    		float a = (float) (time/2000 % (FastMath.TWO_PI));
         	// Do the graphics stuff
-    		Vector3f mouseVector = new Vector3f(Mouse.getX(),Mouse.getY(),0);
     		float dx = Mouse.getDX();
     		float dy = Mouse.getDY();
     		float dr = Mouse.getDWheel();
     		
-    		boolean leftButtonDown = Mouse.isButtonDown(0);
     		boolean rightButtonDown = Mouse.isButtonDown(1);
-    		boolean middleButtonDown = Mouse.isButtonDown(2);
-    		
-    		_curframe++;
     		
     		if (rightButtonDown) {
     			_camera.addHorizontalRotationAboutTarget(-dx/400f);
