@@ -1,14 +1,16 @@
-#version 120
+#version 150
 
-varying vec2 orig_pos;
-varying vec4 final_color;
+in vec2 orig_pos;
+in vec4 final_color;
+
+out vec4 frag_color;
 
 void main() 
 {
     float radius = abs(length(orig_pos)) * 1.414;
 	if (radius < 1) {
-		gl_FragColor = final_color * (1.0 - radius*radius);
+		frag_color = final_color * (1.0 - radius*radius);
 	} else {
-		gl_FragColor = vec4(0,0,0,1);
+		frag_color = vec4(0,0,0,1);
 	}
 }

@@ -106,8 +106,11 @@ public class Axis extends Renderable {
 
 		// Set up the position array
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _vbpos.getId());
+		Util.checkGLError();
 		GL20.glEnableVertexAttribArray(_vertexAttrIndex_pos);
+		Util.checkGLError();
 		GL20.glVertexAttribPointer(_vertexAttrIndex_pos, 3, GL_FLOAT, false, 0, 0);
+		Util.checkGLError();
 
 		// Set up the color array
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _vbcolor.getId());
@@ -120,7 +123,6 @@ public class Axis extends Renderable {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _vbindex.getId());
 		
 		GL11.glDrawElements(GL11.GL_LINES, _vbindex.getNumElements(), GL11.GL_UNSIGNED_INT, 0L); // Motherfucker!  Has to be GL_UNSIGNED_INT
-		Util.checkGLError();
 
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0); // Clear binding
 		GL20.glDisableVertexAttribArray(_vertexAttrIndex_pos);

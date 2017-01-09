@@ -1,11 +1,13 @@
-#version 120
-varying vec2 pass_texcoord;
+#version 150
+in vec2 pass_texcoord;
 
 uniform sampler2D texFramebuffer;
 uniform int scan_lines;
 
+out vec4 frag_color;
+
 void main() {
-	vec4 pixel = texture2D(texFramebuffer, pass_texcoord);
+	vec4 pixel = texture(texFramebuffer, pass_texcoord);
 	pixel = floor(pixel*16)/16;
 	float mag;
 	if (scan_lines > 1) {
@@ -13,5 +15,6 @@ void main() {
 	} else {
 	    mag = 1;
 	}
-	gl_FragColor = pixel*mag;
+	frag_color = pixel*mag;
+	
 }

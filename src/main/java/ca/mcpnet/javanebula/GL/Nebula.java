@@ -69,29 +69,15 @@ public class Nebula {
 
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		GL14.glBlendEquation(GL14.GL_FUNC_ADD);
-		glEnable(GL11.GL_DITHER);
+		// glEnable(GL11.GL_DITHER);
 		// glDisable(GL11.GL_DITHER);
 		for (DoublePointStar dps : _dpsarray) {
 			dps.draw();
 		}
-		/*
-		DoublePointStar dps = _dpsarray.get(_dpsarray.size()-1);
-		_wiresphere.setScale(0.2f);
-		_wiresphere.setTranslation(dps.getTranslation());
-		_wiresphere.setColor(0.2f,0f,0f,1f);
-		_wiresphere.draw();
-		*/
-		// GL14.glBlendEquation(GL14.GL_MAX);
+		//GL14.glBlendEquation(GL14.GL_MAX);
 		for (GlowSphere gs : _gsarray) {
 			gs.draw();
 		}
-		/*
-		GlowSphere gs = _gsarray.get(_gsarray.size()-1);
-		_wiresphere.setScale(gs.getFloatScale()/2);
-		_wiresphere.setTranslation(gs.getTranslation());
-		_wiresphere.setColor(0f,0.2f,0f,1f);
-		_wiresphere.draw();
-		*/
 	}
 	
 	public void setInterpolations(float star, float glow) {

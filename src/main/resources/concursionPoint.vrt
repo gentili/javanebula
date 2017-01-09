@@ -1,4 +1,4 @@
-#version 120
+#version 150
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
@@ -6,9 +6,9 @@ uniform mat4 projectionMatrix;
 
 uniform vec4 color;
 
-attribute vec3 pos;
+in vec3 pos;
 
-varying vec4 final_color;
+out vec4 final_color;
 
 void main()
 {

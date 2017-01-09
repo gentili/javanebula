@@ -11,8 +11,11 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.Util;
 
+import ca.mcpnet.javanebula.GL.Axis;
 import ca.mcpnet.javanebula.GL.Camera;
 import ca.mcpnet.javanebula.GL.Nebula;
 import ca.mcpnet.javanebula.GL.PixellationFBO;
@@ -51,18 +54,19 @@ public class TestNebula {
 	
 	private Nebula _nebula;
 	private PixellationFBO _pixellationFBO;
+	private Axis _axis;
 	
 	public TestNebula() throws LWJGLException, IOException {
 		// Display Init
-		Display.setDisplayMode(new DisplayMode(640,480));
-		Display.setTitle("Nebula Test");
+		Display.setDisplayMode(Display.getDesktopDisplayMode());
+		Display.setFullscreen(true);
+		Display.setTitle("Nebula Screensaver");
 		Display.setVSyncEnabled(true);
 		
 		PixelFormat pixelFormat = new PixelFormat();
 		ContextAttribs contextAttribs = new ContextAttribs(3,2);
-		contextAttribs = contextAttribs.withProfileCompatibility(true);
-		//contextAttribs = contextAttribs.withForwardCompatible(true);
-		//contextAttribs = contextAttribs.withProfileCore(true);
+		contextAttribs = contextAttribs.withForwardCompatible(true);
+		contextAttribs = contextAttribs.withProfileCore(true);
 		Display.create(pixelFormat, contextAttribs);
 		
 		_log.info("LWJGL version:  " + org.lwjgl.Sys.getVersion());
@@ -74,11 +78,14 @@ public class TestNebula {
 		_camera = new Camera();
 		
 		_nebula = new Nebula();
-		_nebula.setInterpolations(1, 1);
-		_pixellationFBO = new PixellationFBO(6);		
+		_nebula.setInterpolations(1f, 1f);
+		_pixellationFBO = new PixellationFBO(3);
+		_axis = new Axis();
+		_axis.setTranslation(0, 0, 0);
 	}
 	
 	public void run() {
+		Util.checkGLError();
 
 		// Set up the projection matrix
 		float aspect = (float) Display.getWidth() / (float) Display.getHeight();
@@ -90,7 +97,11 @@ public class TestNebula {
 		_camera.setTarget(Vector3f.ZERO);
 		_camera.lookAtTarget();
 		
+		int vaoId = GL30.glGenVertexArrays();
+		GL30.glBindVertexArray(vaoId);
+		
         while(!Display.isCloseRequested()) {
+    		Util.checkGLError();
         	// Do the graphics stuff
     		float dx = Mouse.getDX();
     		float dy = Mouse.getDY();
@@ -102,7 +113,7 @@ public class TestNebula {
     			_camera.addHorizontalRotationAboutTarget(-dx/400f);
     			_camera.addVerticalRotationAboutTarget(-dy/400f);
     		} else {
-    			_camera.addHorizontalRotationAboutTarget(0.01f);
+    			//_camera.addHorizontalRotationAboutTarget(0.01f);
     		}
     		if (dr != 0) {
         		_camera.addRadius(dr/10000f);
@@ -111,14 +122,18 @@ public class TestNebula {
     		_camera.lookAtTarget();
 
     		_shaderProgramManager.setShaderProgram3DMatrixes(null, _camera.getViewMatrixFloatBuffer());
-
+    		Util.checkGLError();
     		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+    		Util.checkGLError();
         	GL11.glScissor(0, 0, Display.getWidth(), Display.getHeight());
+    		Util.checkGLError();
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+    		Util.checkGLError();
 
             _pixellationFBO.begin();
     		_nebula.draw();
     		_pixellationFBO.end();
+            // _axis.draw();
     		
     		Display.update();
         }
