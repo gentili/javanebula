@@ -6,7 +6,7 @@
     <formats>
         <format>zip</format>
     </formats>
-    <baseDirectory>demurrage</baseDirectory>
+    <baseDirectory>javanebula</baseDirectory>
     <files>
         <file>
             <source>target/${finalName}</source>

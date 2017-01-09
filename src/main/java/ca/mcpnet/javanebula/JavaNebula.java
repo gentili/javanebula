@@ -22,7 +22,7 @@ import ca.mcpnet.javanebula.GL.PixellationFBO;
 import ca.mcpnet.javanebula.GL.Projection;
 import ca.mcpnet.javanebula.jme.Vector3f;
 		
-public class TestNebula {
+public class JavaNebula {
 
 	Logger _log = Logger.getLogger("TestGui");
 	
@@ -38,7 +38,7 @@ public class TestNebula {
 		log.info("Starting GameClient");
 
 		try {
-			new TestNebula().run();
+			new JavaNebula().run();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class TestNebula {
 	private PixellationFBO _pixellationFBO;
 	private Axis _axis;
 	
-	public TestNebula() throws LWJGLException, IOException {
+	public JavaNebula() throws LWJGLException, IOException {
 		// Display Init
 		Display.setFullscreen(true);
 		Display.setDisplayMode(Display.getDesktopDisplayMode());
