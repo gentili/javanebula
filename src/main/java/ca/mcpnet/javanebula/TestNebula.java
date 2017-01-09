@@ -58,8 +58,10 @@ public class TestNebula {
 	
 	public TestNebula() throws LWJGLException, IOException {
 		// Display Init
-		Display.setDisplayMode(Display.getDesktopDisplayMode());
 		Display.setFullscreen(true);
+		Display.setDisplayMode(Display.getDesktopDisplayMode());
+		// Display.setDisplayMode(new DisplayMode(1920,1200));
+		_log.info(Display.getDesktopDisplayMode());
 		Display.setTitle("Nebula Screensaver");
 		Display.setVSyncEnabled(true);
 		
@@ -113,7 +115,7 @@ public class TestNebula {
     			_camera.addHorizontalRotationAboutTarget(-dx/400f);
     			_camera.addVerticalRotationAboutTarget(-dy/400f);
     		} else {
-    			//_camera.addHorizontalRotationAboutTarget(0.01f);
+    			_camera.addHorizontalRotationAboutTarget(0.001f);
     		}
     		if (dr != 0) {
         		_camera.addRadius(dr/10000f);
